@@ -348,11 +348,66 @@
     //发送消息
     [[NSNotificationCenter defaultCenter]postNotification:notice];
 }
-
+#warning 解决输入问题
 #pragma mark - 用户改变textFied时
 - (void)textFieldDidChange:(UITextField *)textField
 {
     self.num = [textField.text integerValue];
+    [[UserDataSingleton userInformation].shoppingArray enumerateObjectsUsingBlock:^(ShoppingModel *obj, NSUInteger idx, BOOL *stop) {
+        
+        if ([obj.goodsId isEqualToString:self.listingModel.shopid])
+        {
+            
+            if (obj.num <= [self.listingModel.yunjiage integerValue])
+            {
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"不能小于商品起步价格" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [alert show];
+            }
+            else
+            {
+                obj.num = self.num;
+//                obj.num - [self.listingModel.yunjiage integerValue];
+                self.num = obj.num;
+                *stop = YES;
+                
+                
+                if (self.num ==[self.listingModel.shengyurenshu integerValue]) {
+                    
+                    //                        self.btbaowei.backgroundColor=[UIColor greenColor];
+                    //                        [self.btbaowei setTitle:@"√" forState:UIControlStateNormal];
+                    _btbaowei.selected = YES;
+                    
+                    self.lbbaowei.text=@"购买人次自动调整为包尾人次！";
+                    
+                    self.listingModel.isbaowei=1;
+                    
+                    
+                }
+
+                //                self.btbaowei.backgroundColor=MainColor;
+                //                [self.btbaowei setTitle:@"包尾" forState:UIControlStateNormal];
+//                _btbaowei.selected = NO;
+//                
+//                self.lbbaowei.text=@"";
+//                
+//                self.listingModel.isbaowei=0;
+            }
+            
+            
+        }
+//        [self showOrderNumbers:self.num];
+        
+        DebugLog(@"%ld---------%@",(long)obj.num,obj.goodsId);
+    }];
+    
+    //创建一个消息对象
+    NSNotification * notice = [NSNotification notificationWithName:@"jieSuan" object:nil userInfo:nil];
+    //发送消息
+    [[NSNotificationCenter defaultCenter]postNotification:notice];
+    
+    
+    DebugLog(@"%zd",self.num);
+
     
 }
 
