@@ -158,7 +158,7 @@
         nameLab.font=[UIFont systemFontOfSize:BigFont];
         nameLab.backgroundColor=[UIColor clearColor];
         [cell  addSubview:nameLab];
-        
+        DebugLog(@"aaa");
         UILabel *numberLab=[[UILabel alloc]initWithFrame:CGRectMake(Img.right+20, nameLab.bottom, 160, 20)];
         numberLab.text=[NSString stringWithFormat:@"推广ID：%@",[UserDataSingleton userInformation].uid];
         numberLab.textColor=[UIColor blackColor];
