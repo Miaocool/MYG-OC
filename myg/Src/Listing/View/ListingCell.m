@@ -353,7 +353,7 @@
 - (void)textFieldDidChange:(UITextField *)textField
 {
     self.num = [textField.text integerValue];
-    [self showOrderNumbers:self.num];
+//    [self showOrderNumbers:self.num];
     
 }
 
