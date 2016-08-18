@@ -25,5 +25,6 @@
 @property (nonatomic,weak) NSTimer *timer2;
 @property (nonatomic,weak) NSTimer *timer3;
 
+- (void)httpGetAwardTip;
 
 @end

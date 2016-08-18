@@ -156,6 +156,10 @@
         self.lblTime.text=_latestModel.tishi;
         self.lblTime.frame = CGRectMake(imgHeight + 20+20+10, 82,[UIScreen mainScreen].bounds.size.width - imgHeight - 30,20);
         self.lblTime.font = [UIFont systemFontOfSize:15];
+        
+        
+        
+        
     }
     
     if ([_latestModel.xiangou isEqualToString:@"0"]) {
@@ -202,12 +206,19 @@
 //    self.lblTime.text = [NSString stringWithFormat:@"揭晓倒计时：%d:%d:%d",self.minutes,self.seconds,self.ms];
     self.lblTime.frame= CGRectMake(imgHeight + 20+20+10, 72,[UIScreen mainScreen].bounds.size.width - imgHeight - 30,30);
     _lblTime.font = [UIFont systemFontOfSize:30];
-     self.lblTime.text = [NSString stringWithFormat:@"%d:%d:%d",self.minutes,self.seconds,self.ms];
+     self.lblTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d",self.minutes,self.seconds,self.ms];
     if (self.seconds == 0 && self.ms == 0 && self.minutes == 0)
     {
+        
+        
+        
         _lblTime.font = [UIFont systemFontOfSize:15];
-
-        _lblTime.text = @"彩票中心故障！";
+#warning 添加通知
+        _lblTime.text = @"正在开奖中...";
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"openPrize" object:_lblTime];
+        
+//        _lblTime.text = @"彩票中心故障！";
 //        _imgTimeBG.hidden = YES;
        
         [self.timer invalidate];

@@ -32,8 +32,9 @@
 #import "HonorRollViewCell.h"
 #import <ShareSDK/ShareSDK.h>
 #import "EGOImageLoader.h"
-
-@interface GoodsDetailsViewController ()<PullingRefreshTableViewDelegate,UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate,UITextFieldDelegate>
+#import "AwardTipView.h"
+#import "WinningRecordViewController.h"
+@interface GoodsDetailsViewController ()<PullingRefreshTableViewDelegate,UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate,UITextFieldDelegate,CloseTipViewDelegate>
 @property (nonatomic, strong) PullingRefreshTableView *tableView;
 @property (nonatomic, assign) NSInteger num; //记录当前页数
 @property (nonatomic, strong) NSMutableArray *dataArray; //数据源
@@ -55,6 +56,11 @@
 @property (nonatomic, assign)int shengyucount;//剩余数
 
 @property (nonatomic, assign) NSInteger goodnum; //购买数量
+
+
+
+@property (nonatomic, strong) NSMutableArray  *awardTipArray;
+@property (nonatomic, strong) AwardTipView    *awardTipView;
 @end
 
 @implementation GoodsDetailsViewController
@@ -69,6 +75,11 @@
     NSString*_content;
     NSString*_url;
     NSString *_imgurl;
+    
+    NSString*_title1;
+    NSString*_content1;
+    NSString*_url1;
+    NSString *_imgurl1;
     
 }
 
@@ -108,7 +119,191 @@
     
     UIBarButtonItem *rightBtn = [[UIBarButtonItem alloc] initWithCustomView:message];
     self.navigationItem.rightBarButtonItem = rightBtn;
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openJiangResult) name:@"openJiang" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tishiView) name:@"adcellJieXiao" object:nil];
+    
 }
+- (void)openJiangResult{
+    
+    DebugLog(@"开奖结果");
+    
+    
+    
+    
+    [self refreshData];
+    
+    
+    
+}
+
+- (void)tishiView{
+    
+    [self httpGetAwardTip];
+    
+}
+
+#pragma mark - 中奖提示(Added by liwenzhi)
+- (void)httpGetAwardTip
+{
+    self.index = 0;
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setValue:[UserDataSingleton userInformation].uid forKey:@"yhid"];
+    [dict setValue:[UserDataSingleton userInformation].code forKey:@"code"];
+    
+    [MDYAFHelp AFPostHost:APPHost bindPath:AwardTip postParam:dict getParam:nil
+                  success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
+                      
+                      DebugLog(@"res = %@",responseDic);
+                      if ([EncodeFormDic(responseDic, @"code") isEqualToString:@"200"]) {
+                          
+                          NSMutableArray *awardArray = [NSMutableArray array];
+                          NSArray *array = responseDic[@"data"];
+                          
+                          for (NSDictionary *item in array) {
+                              GoodsModel *model =[[GoodsModel alloc]initWithDictionary:item];
+                              [awardArray addObject:model];
+                          }
+                          _awardTipArray = awardArray;
+                          
+                          [self showTipView];
+                      }else{
+                          [_awardTipArray removeAllObjects];
+                      }
+                      
+                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      
+                  }];
+}
+- (void)showTipView
+{
+    if (self.index < _awardTipArray.count) {
+        
+        GoodsModel *model = _awardTipArray[_index];
+        _awardTipView = [[AwardTipView alloc]init];
+        _awardTipView.periodLbl.text = [NSString stringWithFormat:@"第%@期",model.qishu];
+        _awardTipView.awardLbl.text = model.title;
+        _awardTipView.delegate = self;
+        _awardTipView.lookBtn.tag = 100 + _index;
+        _awardTipView.shareBtn.tag = 200 + _index;
+        [_awardTipView.lookBtn addTarget:self action:@selector(lookBtnTouched:) forControlEvents:UIControlEventTouchUpInside];
+        [_awardTipView.shareBtn addTarget:self action:@selector(shareBtnTouched:) forControlEvents:UIControlEventTouchUpInside];
+        //控制中奖提示是否显示
+        [_awardTipView show];
+        self.index ++;
+        
+    }else{
+        self.index = 0;
+    }
+}
+- (void)lookBtnTouched:(UIButton *)button
+{
+    [_awardTipView hidden];
+    
+    WinningRecordViewController *vc = [[WinningRecordViewController alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (void)shareBtnTouched:(UIButton *)button
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setValue:[UserDataSingleton userInformation].uid forKey:@"yhid"];
+    //    [dict setValue:[UserDataSingleton userInformation].code forKey:@"code"];
+    
+    [MDYAFHelp AFPostHost:APPHost bindPath:Share postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
+        
+        if ([responseDic[@"code"] isEqualToString:@"200"])
+        {
+            [_awardTipView hidden];
+            
+            NSDictionary*data = responseDic[@"data"];
+            _url1              = data[@"url"];
+            _title1            = data[@"title"];
+            _content1          = data[@"content"];
+            _imgurl1           = data[@"imgurl"];
+            
+            [self shareAction];
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        [SVProgressHUD showErrorWithStatus:@"网络不给力"];
+    }];
+}
+
+- (void)shareAction
+{
+    UIImage *image = [[EGOImageLoader sharedImageLoader] imageForURL:[NSURL URLWithString:_imgurl1] shouldLoadWithObserver:nil];
+    
+    //构造分享内容
+    id<ISSContent> publishContent = [ShareSDK content:[NSString stringWithFormat:@"%@",_content1]
+                                       defaultContent:@""
+                                                image:[ShareSDK pngImageWithImage:image]
+                                                title:_title1
+                                                  url:_url1
+                                          description:_content1
+                                            mediaType:SSPublishContentMediaTypeNews];
+    
+    
+    //创建弹出菜单容器
+    id<ISSContainer> container = [ShareSDK container];
+    [container setIPadContainerWithView:self.view arrowDirect:UIPopoverArrowDirectionUp];
+    
+    id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
+                                                         allowCallback:YES
+                                                         authViewStyle:SSAuthViewStyleFullScreenPopup
+                                                          viewDelegate:nil
+                                               authManagerViewDelegate:nil];
+    //
+    //    //在授权页面中添加关注官方微博
+    //    [authOptions setFollowAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
+    //                                    [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+    //                                    SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
+    //                                    [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+    //                                    SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
+    //                                    nil]];
+    
+    //创建自定义分享列表
+    NSArray *shareList = [ShareSDK customShareListWithType:
+                          //                          SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
+                          SHARE_TYPE_NUMBER(ShareTypeWeixiTimeline),
+                          SHARE_TYPE_NUMBER(ShareTypeWeixiSession),
+                          //                          SHARE_TYPE_NUMBER(ShareTypeQQ),
+                          SHARE_TYPE_NUMBER(ShareTypeQQSpace),
+                          nil];
+    //显示分享菜单
+    [ShareSDK showShareActionSheet:container
+                         shareList:shareList
+                           content:publishContent
+                     statusBarTips:YES
+                       authOptions:authOptions
+                      shareOptions:[ShareSDK defaultShareOptionsWithTitle:nil
+                                                          oneKeyShareList:[NSArray defaultOneKeyShareList]
+                                                           qqButtonHidden:NO
+                                                    wxSessionButtonHidden:NO
+                                                   wxTimelineButtonHidden:NO
+                                                     showKeyboardOnAppear:NO
+                                                        shareViewDelegate:nil
+                                                      friendsViewDelegate:nil
+                                                    picViewerViewDelegate:nil]
+                            result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                if (state == SSPublishContentStateSuccess)
+                                {
+                                    [self.view showHUDTextAtCenter:@"分享成功"];
+                                }
+                                else if (state == SSPublishContentStateFail)
+                                {
+                                    NSLog(NSLocalizedString(@"TEXT_SHARE_FAI", @"发布失败!error code == %d, error code == %@"), [error errorCode], [error errorDescription]);
+                                    if (type == ShareTypeWeixiSession || type == ShareTypeWeixiTimeline) {
+                                        [self.view showHUDTextAtCenter:@"您未安装微信客户端，分享失败"];
+                                    }else{
+                                        [self.view showHUDTextAtCenter:@"分享失败"];
+                                    }
+                                }
+                            }];
+}
+
 - (void)keyboardWillHide:(NSNotification *)notif
 {
     NSInteger shengyu = [self.model.zongrenshu integerValue] - [self.model.canyurenshu integerValue];

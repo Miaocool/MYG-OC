@@ -133,6 +133,25 @@ static NSString *collectionCellName2 = @"collectionCell";
     [self initData];
 //    [self initcollectionView];
     [self setNavBar];
+ 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(kaijiangTishi) name:@"homeOpenJiang" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jiexiaoRes) name:@"jiexiaoResult" object:nil];
+    
+}
+- (void)jiexiaoRes{
+    
+    DebugLog(@"揭晓结果");
+    
+    [self GetLatesAnnounce];
+    
+    
+    
+}
+- (void)kaijiangTishi{
+    
+    DebugLog(@"显示开奖提示");
+    [self httpGetAwardTip];
+    
     
 }
 
@@ -434,6 +453,8 @@ static NSString *collectionCellName2 = @"collectionCell";
 
 - (void)refreshSuccessful:(id)data
 {
+    
+    
     [self.nonetwork removeFromSuperview];
     [self.dataArray removeAllObjects];
     
@@ -1297,6 +1318,7 @@ static NSString *collectionCellName2 = @"collectionCell";
         if (_LatesAnnArray.count>0)
         {
             GoodsModel *model =[_LatesAnnArray objectAtIndex:indexPath.row];
+            
             
             
             GoodsDetailsViewController *detailsVC = [[GoodsDetailsViewController alloc]init];

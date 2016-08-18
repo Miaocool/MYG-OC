@@ -291,9 +291,11 @@ NSDictionary* style = @{@"body" :
     }
     self.ms--;
 
-    self.time.text = [NSString stringWithFormat:@"即将揭晓 %d:%d:%d",self.minutes,self.seconds,self.ms];
+    self.time.text = [NSString stringWithFormat:@"即将揭晓 %02d:%02d:%02d",self.minutes,self.seconds,self.ms];
     if (self.seconds == 0 && self.ms == 0 && self.minutes == 0)
     {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"openJiang" object:nil];
+        
         [self.timer invalidate];
     }
 }
@@ -411,6 +413,11 @@ if ([UserDataSingleton userInformation].isLogin == YES)
     }
     else
     {
+        
+#warning 揭晓提示
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"adcellJieXiao" object:nil];
+        
 //    修改的－－－－已揭晓
     
 //        _pageControl.hidden=YES;

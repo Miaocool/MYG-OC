@@ -89,6 +89,11 @@
                 
                 self.lbtime.text=_latestModel.username;
                 
+                
+               
+                
+                
+                
             }else if ([_latestModel.type isEqualToString:@"2"]){
                 
                 self.lbtime.text=_latestModel.tishi;
@@ -156,8 +161,11 @@
                         //取消定时器
                         dispatch_source_cancel(self.timer);
                         self.timer = nil;
+                        
+                        
                         dispatch_async(dispatch_get_main_queue(), ^{
                             self.lbtime.text = @"正在揭晓...";
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"jiexiaoResult" object:nil];
                         });
                     }else{
                         
@@ -180,6 +188,7 @@
     }else if ([_latestModel.type isEqualToString:@"1"]){
         
         self.lbtime.text=_latestModel.username;
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"homeOpenJiang" object:nil];
         
     }else{
         
@@ -219,23 +228,12 @@
     }
     self.ms-=4;
   
-    self.lbtime.text = [NSString stringWithFormat:@"%d:%d:%d",self.minutes,self.seconds,self.ms];
+    self.lbtime.text = [NSString stringWithFormat:@"%02d:%02d:%02d",self.minutes,self.seconds,self.ms];
     if (self.seconds == 0 && self.ms == 0 && self.minutes == 0)
     {
 //        [self.timer invalidate];
         self.timer = nil;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 @end

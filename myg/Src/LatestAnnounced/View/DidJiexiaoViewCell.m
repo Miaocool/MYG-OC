@@ -115,6 +115,9 @@
 {
     _latestModel = latestModel;
     
+#warning 提示通知
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DidJiexiaoViewCellJieXiao" object:nil];
+    
     NSDictionary* style1 = @{@"body" :
                                  @[
                                    [UIColor grayColor]],
