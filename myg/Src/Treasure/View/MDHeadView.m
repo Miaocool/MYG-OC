@@ -33,10 +33,11 @@
         imgA.image = [UIImage imageNamed:@"a"];
         [_view addSubview:imgA];
         
-                UILabel*lbcountstyle=[[UILabel alloc]initWithFrame:CGRectMake(40, 20,[UIScreen mainScreen].bounds.size.width-20, 20)];
-                lbcountstyle.text=@"=截止该商品开奖时间点前最后50条全站参与记录";
+                UILabel*lbcountstyle=[[UILabel alloc]initWithFrame:CGRectMake(40, 20,[UIScreen mainScreen].bounds.size.width-30, 40)];
+                lbcountstyle.text=@"=截止该商品开奖时间点前最后50条全站参与记录的时间取值之和";
                 lbcountstyle.textColor=[UIColor grayColor];
-                lbcountstyle.font=[UIFont systemFontOfSize:IPhone4_5_6_6P(12, 12, 15, 15)];
+                lbcountstyle.numberOfLines = 0;
+                lbcountstyle.font=[UIFont systemFontOfSize:IPhone4_5_6_6P(12, 12, 13, 13)];
                 [_view addSubview:lbcountstyle];
         
         UILabel * lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 50, MSW, 1)];

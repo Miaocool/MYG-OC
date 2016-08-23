@@ -126,7 +126,7 @@
     _lblTitle.text=_latestModel.title;
     _lblPrice.text=[NSString stringWithFormat:@"价值: ¥%@",_latestModel.canyurenshu];
     
-[self.imgProduct sd_setImageWithURL:[NSURL URLWithString:latestModel.thumb] placeholderImage:[UIImage imageNamed:DefaultImage]];
+    [self.imgProduct sd_setImageWithURL:[NSURL URLWithString:latestModel.thumb] placeholderImage:[UIImage imageNamed:DefaultImage]];
 
 
     
@@ -141,9 +141,9 @@
         
     if(!self.timer)
     {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.01f target:self selector:@selector(showCount:) userInfo:nil repeats:YES];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.009f target:self selector:@selector(showCount:) userInfo:nil repeats:YES];
         //把定时器放到子线程
-        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:UITrackingRunLoopMode];
+        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
     }
     
 

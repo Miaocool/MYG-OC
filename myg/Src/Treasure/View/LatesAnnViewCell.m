@@ -123,6 +123,7 @@
                 //2.设置定时器的各种属性
                 //(1)什么时候开始定时器
                 dispatch_time_t startTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.08 * NSEC_PER_SEC));
+                
                 //(2)隔多长时间执行一次
                 uint64_t interval = (int64_t)(0.08 * NSEC_PER_SEC);
                 //(3)设置定时器

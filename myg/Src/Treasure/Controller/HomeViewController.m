@@ -616,6 +616,9 @@ static NSString *collectionCellName2 = @"collectionCell";
         }
         self.scrollView.slideImagesArray = array;
         self.scrollView.ianEcrollViewSelectAction = ^(NSInteger i){
+            
+            
+            
             AdModel *model=[self.imageArray objectAtIndex:(long)i];
             
             if ([model.type isEqualToString:@"1"]) {//文章
@@ -1473,7 +1476,6 @@ static NSString *collectionCellName2 = @"collectionCell";
         //控制中奖提示是否显示
         [_awardTipView show];
         self.index ++;
-        
     }else{
         self.index = 0;
     }

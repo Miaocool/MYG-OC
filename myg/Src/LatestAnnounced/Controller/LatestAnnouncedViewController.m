@@ -106,13 +106,9 @@ static NSString *announcedCellName = @"AnnouncedCell.h";
 //开奖结果
 - (void)notficaationOpenPrize:(NSNotification *)note{
     
-    
-    
     DebugLog(@"倒计时结束");
     
-    [self refreshData];
-    
-    
+    [self refreshData];  
     
 }
 
@@ -139,7 +135,7 @@ static NSString *announcedCellName = @"AnnouncedCell.h";
                           
                           NSMutableArray *awardArray = [NSMutableArray array];
                           NSArray *array = responseDic[@"data"];
-                          
+                          DebugLog(@"%zd",array.count);
                           for (NSDictionary *item in array) {
                               GoodsModel *model =[[GoodsModel alloc]initWithDictionary:item];
                               [awardArray addObject:model];
@@ -148,7 +144,10 @@ static NSString *announcedCellName = @"AnnouncedCell.h";
                           
                           [self showTipView];
                       }else{
-                          [_awardTipArray removeAllObjects];
+                          
+                          
+                              [_awardTipArray removeAllObjects];
+                       
                       }
                       
                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -762,6 +761,13 @@ static NSString *announcedCellName = @"AnnouncedCell.h";
     // Dispose of any resources that can be recreated.
 }
 
+
+- (NSMutableArray *)awardTipArray{
+    if (!_awardTipArray) {
+        self.awardTipArray = [NSMutableArray array];
+    }
+    return _awardTipArray;
+}
 
 /*
 #pragma mark - Navigation

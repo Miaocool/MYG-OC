@@ -327,6 +327,7 @@
         else
         {
             self.payClass = [self.classArray objectAtIndex:indexPath.row]; //支付宝
+            DebugLog(@"%@",self.payClass);
         }
     }
 }
@@ -847,7 +848,7 @@
             
             [dict setValue:@"100" forKey:@"mid"]; //用户余额  可选
 
-            [dict setValue:@"" forKey:@"pid"];
+//            [dict setValue:@"" forKey:@"pid"];
             if (self.otherMoney <= 0) {
                 //并且不需要其他支付
                 [dict setValue:@"" forKey:@"zhifu"];

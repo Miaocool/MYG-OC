@@ -335,6 +335,7 @@ MyBuyListModel*mymodel=[[MyBuyListModel alloc]init];
             _didcount=count[@"jiexiao"];
               self.titleArray = [NSMutableArray array];
             self.dataArray = [NSMutableArray array];
+            
             self.titleArray = @[[NSString stringWithFormat:@"全部(%@)",_allcount],[NSString stringWithFormat:@"进行中(%@)",_doingcount],[NSString stringWithFormat:@"已揭晓(%@)",_didcount]];
             self.buttonArray = [NSMutableArray array];
             _i = 0;
@@ -349,7 +350,6 @@ MyBuyListModel*mymodel=[[MyBuyListModel alloc]init];
         
         [SVProgressHUD showErrorWithStatus:@"网络不给力"];
     }];
-    
 }
 
 #pragma mark - UI
