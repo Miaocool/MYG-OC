@@ -254,23 +254,10 @@
 //  上传图片
 - (void)onPostData
 {
-//    if (![YUserDefaults boolForKey:ISREM])
-//    {
-//        
-//        [NBAlertView showAlertTitle:nil andMsg:@"您还未登录,去登录" cancelButtonTitle:nil otherButtonTitles:@"确定" andBlock:^(NSInteger index, id contxt) {
-//            if (index == 1) {
-//                LoginViewController   *loginVC = [[LoginViewController alloc]init];
-//                loginVC.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:loginVC animated:YES];
-//                
-//            }
-//        }];
-//        
-//    }else    
+   
     {
         NSString *str = TMP_UPLOAD_IMG_PATH;
-        
-        // NSString *imgStr = [_itemArray componentsJoinedByString:@","];
+
         NSMutableDictionary  *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:str,@"partAttach", nil];
     
         NSString *url= [NSString stringWithFormat:@"%@/app/home/uploadimg",APPHost];

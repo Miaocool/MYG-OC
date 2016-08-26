@@ -315,24 +315,7 @@
     [self.view addSubview:waitingDialog];
     [((MBProgressHUD *)waitingDialog) show:YES];
     [self dismissViewControllerAnimated:YES completion:^(void){
-//        UIImage * image = [image objectForKey:UIImagePickerControllerOriginalImage];
-//        NSData *imageData = UIImageJPEGRepresentation(image, 1);// jpeg
-//        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-//        [dict setValue:fileName forKey:@"img"];
-//        [dict setValue:[UserDataSingleton userInformation].uid forKey:@"yhid"];
-//        [dict setValue:[UserDataSingleton userInformation].code forKey:@"code"];
-//        [MDYAFHelp AFPostHost:APPHost bindPath:ModifyImage postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
-//            DebugLog(@"==========%@",responseDic);
-//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            DebugLog(@"!!!!!!!!!!!!!!!!!!%@",error);
-//        }];
-//        
-//        self.headImageView.image = image;
-//        
-//        //   self.userImage = image;
-//        [self.tableView reloadData];
-//        // 让 选择图片的界面  消失
-//        [picker dismissViewControllerAnimated:YES completion:nil];
+        
        [self onPostData];
     }];
 }
@@ -342,6 +325,7 @@
     NSMutableDictionary * dir=[NSMutableDictionary dictionaryWithCapacity:2];
     [dir setValue:[UserDataSingleton userInformation].uid forKey:@"yhid"];
     [dir setValue:[UserDataSingleton userInformation].code forKey:@"code"];
+
     NSString *url= [NSString stringWithFormat:@"%@/app/home/editPhoto",APPHost];
     
     DebugLog(@"=======上传");
@@ -373,23 +357,7 @@
     [self.tableView reloadData];
 
 }
-//-(void)getLoad
-//{
-//    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-//    [dict setValue:[UserDataSingleton userInformation].uid forKey:@"yhid"];
-//    [dict setValue:[UserDataSingleton userInformation].code forKey:@"code"];
-//    [dict setValue:_imgURL forKey:@"img"];
-//    [MDYAFHelp AFPostHost:APPHost bindPath:shuangchuan postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
-//        if ([responseDic[@"code"] isEqualToString:@"200"])
-//        {
-//            [self.navigationController popViewControllerAnimated:YES];
-//        }
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"当前网络不给力" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [alert show];
-//    }];
-//
-//}
+
 - (void)saveImage:(UIImage *)tempImage WithName:(NSString *)imageName
 {
     DebugLog(@"===TMP_UPLOAD_IMG_PATH===%@",TMP_UPLOAD_IMG_PATH);

@@ -384,21 +384,21 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row != 0 ) {
+//    if (indexPath.row != 0 ) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         FriendsModel * model;
-        if (self.tag == 200) {
-            model = [_rankingArray objectAtIndex:indexPath.row - 1];
+        if (self.tag == 201) {
+            model = _rankingArray[indexPath.row] ;
         }else if (self.tag == 201) {
-            model = [_friendArray1 objectAtIndex:indexPath.row - 1];
+//            model = [_friendArray1 objectAtIndex:indexPath.row - 1];
         }else if (self.tag == 202){
-            model = [_friendArray2 objectAtIndex:indexPath.row - 1];
+//            model = [_friendArray2 objectAtIndex:indexPath.row - 1];
         }else if (self.tag == 203){
-            model = [_friendArray3 objectAtIndex:indexPath.row - 1];
+//            model = [_friendArray3 objectAtIndex:indexPath.row - 1];
         }
         
         [self.delegate shouldPushControllerWithUid:model.uid];
-    }
+//    }
 }
 
 #pragma mark - tableview继承滚动试图的协议

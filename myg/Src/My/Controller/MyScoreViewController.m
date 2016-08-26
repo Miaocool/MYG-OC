@@ -206,6 +206,7 @@
     
     
     self.describeLab=[[UILabel alloc]initWithFrame:CGRectMake(20, _SignBtn.bottom, MSW-40, 100)];
+    DebugLog(@"%@",text);
     self.describeLab.text=text;
     self.describeLab.textColor=[UIColor blackColor];
     self.describeLab.numberOfLines=0;

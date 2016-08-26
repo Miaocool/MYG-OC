@@ -66,7 +66,7 @@
     [_LeftImgView addSubview:_xunbaobi];
     
    //标题
-    _titleLab=[[UILabel alloc]initWithFrame:CGRectMake(_LeftImgView.right+5, 5, 100, 20)];
+    _titleLab=[[UILabel alloc]initWithFrame:CGRectMake(_LeftImgView.right+5, 5, 200, 20)];
     _titleLab.text=@"微信海购红包";
     _titleLab.backgroundColor = [UIColor clearColor];
     _titleLab.textColor = [UIColor blackColor];

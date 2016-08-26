@@ -16,6 +16,7 @@
 #import "GameViewController.h"
 #import "Masonry.h"
 #import "MBProgressHUD.h"
+#import "LogisticInfoVC.h"
 #define Margin 20
 @interface ConfirmedWinController ()<UITableViewDelegate,UITableViewDataSource>{
     
@@ -430,6 +431,14 @@
     titLab.backgroundColor=[UIColor clearColor];
     [bgView2 addSubview:titLab];
     
+    UIButton *wuliuInfoBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [wuliuInfoBtn setTitle:@"查看物流信息>>" forState:UIControlStateNormal];
+    wuliuInfoBtn.frame = CGRectMake(_scrollView.size.width-115, 5, 110, 30);
+    [bgView2 addSubview:wuliuInfoBtn];
+    
+    [wuliuInfoBtn addTarget:self action:@selector(wuliuInfo) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     UIView *line3=[[UIView alloc]initWithFrame:CGRectMake(10, titLab.bottom, MSW, 0.8)];
     line3.backgroundColor=RGBCOLOR(217, 217, 217);
     [bgView2 addSubview:line3];
@@ -456,7 +465,18 @@
     [bgView2 addSubview:numberLab];
     bgView2.frame = CGRectMake(0, bgView.bottom + 10, MSW, numberLab.bottom + 5);
 }
-
+#pragma mark - 物流信息详情
+- (void)wuliuInfo{
+    
+    
+    DebugLog(@"物流信息详情：%@，--%@",_redModel.company,_redModel.company_code);
+    
+    LogisticInfoVC *wuliuInfo = [LogisticInfoVC new];
+    wuliuInfo.commanyType = _redModel.company;
+    wuliuInfo.orderCode = _redModel.company_code;
+    [self.navigationController pushViewController:wuliuInfo animated:YES];
+ 
+}
 #pragma mark - 收货信息
 -(void)createThiredView
 {

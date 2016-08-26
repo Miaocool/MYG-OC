@@ -38,7 +38,8 @@
 #import "UITabBar+badge.h"
 
 #import "NavViewController.h"
-
+#import "LogisticInfoVC.h"
+#import "UMMobClick/MobClick.h"
 @interface AppDelegate ()<WXApiDelegate>
 {
     NSString *Newurl;
@@ -132,10 +133,29 @@
     //改变状态栏
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
+    
+    
+    [self statisticsData];
+    
     return YES;
 }
 
-
+#pragma mark -友盟统计数据
+- (void)statisticsData{
+    
+    
+    // app key
+    UMConfigInstance.appKey = @"57bfa91567e58e4380000917";
+    // 渠道
+    UMConfigInstance.channelId = @"App store";
+    
+    //初始化SDK
+    [MobClick startWithConfigure:UMConfigInstance];
+    //Version标识
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [MobClick setAppVersion:version];
+    
+}
 
 #pragma mark 从服务器动态获取推送key
 - (void)httpGetPromptWithLaunchOptions:(NSDictionary *)launchOptions

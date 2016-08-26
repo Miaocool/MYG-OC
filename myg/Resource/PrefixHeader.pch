@@ -17,6 +17,9 @@
 
 
 //服务器前缀
+//#define APPHost @"http://myg.ishangwai.com/?" //ce
+
+//#define APPHost @"http://pgmyg.miyungou.com/?" //host3
 
 #define APPHost @"http://www.miyungou.com/?" //sheng
 
