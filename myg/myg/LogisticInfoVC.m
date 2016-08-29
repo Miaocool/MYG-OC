@@ -20,18 +20,17 @@
     
     self.title = @"物流信息";
     
-    if (self.orderCode == nil) {
-        DebugLog(@"暂时无物流信息");
-        return;
-    }
+    
     
     DebugLog(@"%@",self.commanyType);
     
     self.logInfoWebView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     [self.view addSubview:self.logInfoWebView];
     
+    NSString *str = [self encodeToPercentEscapeString:self.commanyType];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.miyungou.com/api/kuaidi.php?type=%@&postid=%@",self.commanyType,self.orderCode]];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.miyungou.com/api/kuaidi.php?type=%@&postid=%@#result",str,self.orderCode]];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
@@ -40,6 +39,16 @@
     
     
     
+}
+- (NSString *)encodeToPercentEscapeString: (NSString *) input
+{
+    NSString *outputStr = (__bridge NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                                                                       NULL, /* allocator */
+                                                                                       (__bridge CFStringRef)input,
+                                                                                       NULL, /* charactersToLeaveUnescaped */
+                                                                                       (CFStringRef)@"!*'();:@&=+$,/?%#[]",kCFStringEncodingUTF8);
+    return
+    outputStr;
 }
 
 @end

@@ -215,7 +215,7 @@
                                   [UIColor blackColor]],
                             @"u": @[MainColor, ]};
     
-    UILabel * friendsCount = [[UILabel alloc] initWithFrame:CGRectMake( headImg.right +15, 15, 200, 30)];
+    UILabel * friendsCount = [[UILabel alloc] initWithFrame:CGRectMake( headImg.right +15, 15+15, 200, 30)];
     friendsCount.attributedText = [[NSString stringWithFormat:@"累计好友：<u>%@</u>",self.friend_all] attributedStringWithStyleBook:style];
     [self.topView addSubview:friendsCount];
     

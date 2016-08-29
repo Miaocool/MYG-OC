@@ -366,7 +366,7 @@
 //            cell.lbJifen.textColor = [UIColor blackColor];
     FriendsModel * model = self.rankingArray[indexPath.row];
 //    [_rankingArray objectAtIndex:indexPath.row - 1];
-            cell.lbID.text = [NSString stringWithFormat:@"%li",(long)indexPath.row];
+            cell.lbID.text = [NSString stringWithFormat:@"%li",(long)indexPath.row+1];
             [cell setRankingModel:model];
 //        }else if (self.tag == 201) {
 //            FriendsModel * model = [_friendArray1 objectAtIndex:indexPath.row - 1];

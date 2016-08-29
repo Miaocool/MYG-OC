@@ -237,17 +237,23 @@
             [self.navigationController pushViewController:share animated:YES];
         }
         else if (indexPath.row==1){
-            MyEarningViewController *earn=[[MyEarningViewController alloc]init];
-            [self.navigationController pushViewController:earn animated:YES];
-        }
-        else if (indexPath.row==2){
+//            MyEarningViewController *earn=[[MyEarningViewController alloc]init];
+//            [self.navigationController pushViewController:earn animated:YES];
             ExchangeViewController *exchange=[[ExchangeViewController alloc]init];
             [self.navigationController pushViewController:exchange animated:YES];
+
         }
-        else if (indexPath.row==3){
+        else if (indexPath.row==2){
+//            ExchangeViewController *exchange=[[ExchangeViewController alloc]init];
+//            [self.navigationController pushViewController:exchange animated:YES];
             ExchangeRecordViewController *record=[[ExchangeRecordViewController alloc]init];
             [self.navigationController pushViewController:record animated:YES];
+
         }
+//        else if (indexPath.row==3){
+//            ExchangeRecordViewController *record=[[ExchangeRecordViewController alloc]init];
+//            [self.navigationController pushViewController:record animated:YES];
+//        }
     }
     
 }
