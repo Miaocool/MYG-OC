@@ -163,7 +163,7 @@
                 textCell.textField.placeholder = @"请输入游戏名称";
                 textCell.titleLabel.text = @"游戏名称";
                 textCell.textField.tag = 102;
-                textCell.textField.keyboardType = UIKeyboardTypeNumberPad;
+//                textCell.textField.keyboardType = UIKeyboardTypeNumberPad;
                 _gameNameStr=textCell.textField.text;
                 [textCell.textField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
             }
