@@ -321,7 +321,7 @@
             
         }
         else{
-             self.dateLable.text=@"彩票故障中！";
+             self.dateLable.text=@"正在揭晓中...";
             _guzhang.text=_latestModel.tishi;
             _jiexiaoView.hidden=NO;
             _label.hidden=NO;

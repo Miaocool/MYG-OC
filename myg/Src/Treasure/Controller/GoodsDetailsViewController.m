@@ -1285,7 +1285,7 @@ if ([_model.type isEqualToString:@"进行中"]) {
                     //                    adCell.jiexiao.hidden=YES;修改
                     //  adCell. pageControl.hidden=YES;
                     adCell.stateLabel.hidden = NO;
-                    adCell.stateLabel.text = @"故障中";
+                    adCell.stateLabel.text = @"正在揭晓中...";
                     adCell.stateLabel. backgroundColor = MainColor;
                     adCell.totalLabel.hidden=NO;
                     adCell.remainingLabel.hidden=YES;
@@ -1493,8 +1493,6 @@ if ([_model.type isEqualToString:@"进行中"]) {
                 }
             }
         }
-        
-        
     }else{
 if ([_model.type isEqualToString:@"倒计时"]||[_model.type isEqualToString:@"故障中"])
         {

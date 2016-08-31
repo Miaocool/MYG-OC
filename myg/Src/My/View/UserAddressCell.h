@@ -13,6 +13,7 @@
 @protocol UserAddressCellDelegate <NSObject>
 
 - (void)changController:(UserAddressCell *)userAddressCell;
+- (void)clickAddressBtn:(UIButton *)button;
 
 @end
 @interface UserAddressCell : UITableViewCell
@@ -38,7 +39,7 @@
 
 
 @property (nonatomic, strong) AddressDto *addressModel;
-
+@property (nonatomic,strong)UIButton *clickButton;
 @property (nonatomic, weak) id<UserAddressCellDelegate> delegate;
 
 

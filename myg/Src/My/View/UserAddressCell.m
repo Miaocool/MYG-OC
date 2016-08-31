@@ -116,10 +116,25 @@
     self.remarkLabel.textColor = [UIColor blackColor];
     [_bgView addSubview:self.remarkLabel];
 
-    
-    
+    // 确认收货地址
+    self.clickButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.clickButton setTitle:@"确认" forState:UIControlStateNormal];
+    self.clickButton.frame = CGRectMake(_editButton.frame.origin.x-60, _editButton.frame.origin.y, 50, 30);
+    [_bgView addSubview:self.clickButton];
+    [self.clickButton addTarget:self action:@selector(clickButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     
 }
+- (void)clickButtonAction:(UIButton *)sender{
+    
+    
+    
+    DebugLog(@"%zd",[self.delegate respondsToSelector:@selector(clickAddressBtn:)]);
+    
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(clickAddressBtn:)]) {
+        [self.delegate clickAddressBtn:sender];
+    }
+}
+
 - (void)changeController{
     
     if ([self.delegate respondsToSelector:@selector(changController:)]) {

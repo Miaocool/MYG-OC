@@ -251,6 +251,23 @@ UIView        *_tablefooterView;
     }
     
 }
+// 确认收货信息
+- (void)clickAddressBtn:(UIButton *)button{
+    
+    DebugLog(@"确认收货信息");
+    
+    
+
+    DebugLog(@"%@",button.superview.superview);
+    
+//    self.indexPath = indexPath;
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您确认选择该地址吗?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alert.tag = 1234;
+    [alert show];
+
+    
+    
+}
 
 
 

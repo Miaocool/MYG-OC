@@ -321,7 +321,7 @@
 //    }
 //    NSLog(@"%zd",self.rankingArray.count);
 
-    return self.rankingArray.count;
+    return self.rankingArray.count+1;
    }
 
 
@@ -335,7 +335,7 @@
         cell = [[InviteFriendsViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    if (indexPath.row == 0) {
+    if (indexPath.row == 0) {
 //        if (self.tag == 200) {
 //            
 //            cell.lbID.frame = CGRectMake(0, 5, MSW/4 - 30 -0.5, 30);
@@ -351,23 +351,23 @@
 //            cell.lbTime.text = @"昵称";
 //            cell.lbJifen.text = @"好友数";
 //        }else{
-//            cell.lbID.text = @"ID";
-//            cell.lbNickname.text = @"昵称";
-//            cell.lbTime.text = @"日期";
-//            cell.lbJifen.textColor = [UIColor blackColor];
-//            cell.lbJifen.text = @"积分";
+            cell.lbID.text = @"ID";
+            cell.lbNickname.text = @"昵称";
+            cell.lbTime.text = @"日期";
+            cell.lbJifen.textColor = [UIColor blackColor];
+            cell.lbJifen.text = @"积分";
 //        }
-//    }
+    }
 //
-//    if (indexPath.row > 0  ) {
+    else if (indexPath.row > 0  ) {
 //        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
 //        cell.lbJifen.textColor = MainColor;
 //        if (self.tag == 200) {
 //            cell.lbJifen.textColor = [UIColor blackColor];
-    FriendsModel * model = self.rankingArray[indexPath.row];
+    FriendsModel * model = self.rankingArray[indexPath.row-1];
 //    [_rankingArray objectAtIndex:indexPath.row - 1];
-            cell.lbID.text = [NSString stringWithFormat:@"%li",(long)indexPath.row+1];
-            [cell setRankingModel:model];
+//            cell.lbID.text = [NSString stringWithFormat:@"%li",(long)indexPath.row+1];
+            [cell setModel:model];
 //        }else if (self.tag == 201) {
 //            FriendsModel * model = [_friendArray1 objectAtIndex:indexPath.row - 1];
 //            [cell setModel:model];
@@ -379,16 +379,15 @@
 //            [cell setModel:model];
 //        }
 //
-//    }
+    }
     return cell;
 }
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    if (indexPath.row != 0 ) {
+    if (indexPath.row != 0 ) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         FriendsModel * model;
         if (self.tag == 201) {
-            model = _rankingArray[indexPath.row] ;
+            model = _rankingArray[indexPath.row-1] ;
         }else if (self.tag == 201) {
 //            model = [_friendArray1 objectAtIndex:indexPath.row - 1];
         }else if (self.tag == 202){
@@ -398,7 +397,7 @@
         }
         
         [self.delegate shouldPushControllerWithUid:model.uid];
-//    }
+    }
 }
 
 #pragma mark - tableview继承滚动试图的协议

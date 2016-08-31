@@ -319,6 +319,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     cell.addressModel= self.dataArray[indexPath.row];
+    cell.clickButton.hidden = YES;
     cell.delegate = self;
     return cell;
     
@@ -366,6 +367,23 @@
         changGame.addressDto = userAddressCell.addressModel;
         [self.navigationController pushViewController:changGame animated:YES];
     }
+    
+}
+// 确认收货信息
+- (void)clickAddressBtn:(UIButton *)button{
+    
+    DebugLog(@"确认收货信息");
+    
+    
+    
+    DebugLog(@"%@",button.superview.superview);
+    
+    //    self.indexPath = indexPath;
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您确认选择该地址吗?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alert.tag = 1234;
+    [alert show];
+    
+    
     
 }
 

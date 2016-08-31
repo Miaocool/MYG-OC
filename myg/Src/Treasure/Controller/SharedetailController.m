@@ -339,6 +339,8 @@
     iconImg.layer.cornerRadius = 20;
     iconImg.layer.masksToBounds = YES;
     iconImg.backgroundColor = [UIColor orangeColor];
+    //http://www.miyungou.com/statics/uploads/touimg/20160824/1472043864.jpg
+    //http://www.miyungou.com/statics/uploads/touimg/20160824/1472043864.jpg
     [iconImg sd_setImageWithURL:[NSURL URLWithString:model.img] placeholderImage:[UIImage imageNamed:DefaultImage]];
     [_scroll addSubview:iconImg];
         //昵称

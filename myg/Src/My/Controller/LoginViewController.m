@@ -210,83 +210,107 @@
     [self.scrollView addSubview:self.wxlabel];
 
     
-    if ([self.qqcode isEqualToString:@"0"] &&[self.wxcode isEqualToString:@"819c1"])
-    { //QQ隐藏
-        self.qqBtn.hidden=YES;
-        self.qqLabel.hidden=YES;
         
-        if ([WXApi isWXAppInstalled]) {
-            //判断是有微信
-            self.wxbtn.hidden= NO;
-            self.wxbtn.hidden = NO;
+        if ([QQApiInterface isQQInstalled]) {
+            self.qqBtn.hidden = NO;
+            self.qqLabel.hidden = NO;
+        }else{
             
-            self.wxbtn.frame = CGRectMake(MSW / 2 - 29, _textLabel.frame.size.height + _textLabel.frame.origin.y + 10, 58, 58);
-            self.wxlabel.frame = CGRectMake(MSW / 2 - 29, self.qqBtn.frame.origin.y + self.qqBtn.frame.size.height + 10, self.qqBtn.frame.size.width, 14);
+            //QQ隐藏
+            self.qqBtn.hidden=YES;
+            self.qqLabel.hidden=YES;
         }
-        else
-        {
+        if ([WXApi isWXAppInstalled]) {
+            self.wxbtn.hidden = NO;
+            self.wxlabel.hidden = NO;
+        }else{
+            
             self.wxbtn.hidden = YES;
             self.wxlabel.hidden = YES;
             self.textLabel.hidden=YES;
-            
         }
 
-    }
-    
-    else   if ([self.wxcode isEqualToString:@"0"]&&[self.qqcode isEqualToString:@"819c1"] ) //wx 隐藏
-    {
-        self.wxbtn.hidden=YES;
-        self.wxlabel.hidden=YES;
+      
         
-//        self.qqBtn.frame=self.wxbtn.frame;
-//        self.qqLabel.frame=self.wxlabel.frame;
-        
-        self.qqBtn.frame = CGRectMake(MSW / 2 - 29, _textLabel.frame.size.height + _textLabel.frame.origin.y + 10, 58, 58);
-        self.qqLabel.frame = CGRectMake(self.qqBtn.frame.origin.x, self.qqBtn.frame.origin.y + self.qqBtn.frame.size.height + 10, self.qqBtn.frame.size.width, 14);
-        
-    }
-    
-    else  if ([self.qqcode isEqualToString:@"0"] && [self.wxcode isEqualToString:@"0"])
-    {
-        self.qqBtn.hidden=YES;
-        self.qqLabel.hidden=YES;
-        
-        self.wxbtn.hidden=YES;
-        self.wxlabel.hidden=YES;
-        
-        self.textLabel.hidden=YES;
-    }
-    
-    else if ([self.qqcode isEqualToString:@"819c1"] && [self.wxcode isEqualToString:@"819c1"])
-    {
-        if ([WXApi isWXAppInstalled]) {
-            //判断是有微信
-            self.wxbtn.hidden= NO;
-            self.wxbtn.hidden = NO;
-            /*
-             self.qqBtn.frame = CGRectMake(MSW / 2 - 29, _textLabel.frame.size.height + _textLabel.frame.origin.y + 10, 58, 58);
-             self.qqLabel.frame =  CGRectMake(self.qqBtn.frame.origin.x, self.qqBtn.frame.origin.y + self.qqBtn.frame.size.height + 10, self.qqBtn.frame.size.width, 14);
-             */
-            
-        }
-        else
-        {
-            self.wxbtn.hidden = YES;
-            self.wxlabel.hidden = YES;
-            /*
-             //self.qqBtn.frame = self.wxbtn.frame;
-             //self.qqLabel.frame = self.wxlabel.frame;
-             */
-            self.qqBtn.frame = CGRectMake(MSW / 2 - 29, _textLabel.frame.size.height + _textLabel.frame.origin.y + 10, 58, 58);
-            self.qqLabel.frame = CGRectMake(self.qqBtn.frame.origin.x, self.qqBtn.frame.origin.y + self.qqBtn.frame.size.height + 10, self.qqBtn.frame.size.width, 14);
-        }
-
-    }
-        
- }
-    else
-    {
-        
+//        
+//        
+//    if ([self.qqcode isEqualToString:@"0"] &&[self.wxcode isEqualToString:@"819c1"])
+//    { //QQ隐藏
+//        self.qqBtn.hidden=YES;
+//        self.qqLabel.hidden=YES;
+//        
+//        if ([WXApi isWXAppInstalled]) {
+//            //判断是有微信
+//            self.wxbtn.hidden= NO;
+//            self.wxbtn.hidden = NO;
+//            
+//            self.wxbtn.frame = CGRectMake(MSW / 2 - 29, _textLabel.frame.size.height + _textLabel.frame.origin.y + 10, 58, 58);
+//            self.wxlabel.frame = CGRectMake(MSW / 2 - 29, self.qqBtn.frame.origin.y + self.qqBtn.frame.size.height + 10, self.qqBtn.frame.size.width, 14);
+//        }
+//        else
+//        {
+//            self.wxbtn.hidden = YES;
+//            self.wxlabel.hidden = YES;
+//            self.textLabel.hidden=YES;
+//            
+//        }
+//
+//    }
+//    
+//    else   if ([self.wxcode isEqualToString:@"0"]&&[self.qqcode isEqualToString:@"819c1"] ) //wx 隐藏
+//    {
+//        self.wxbtn.hidden=YES;
+//        self.wxlabel.hidden=YES;
+//        
+////        self.qqBtn.frame=self.wxbtn.frame;
+////        self.qqLabel.frame=self.wxlabel.frame;
+//        
+//        self.qqBtn.frame = CGRectMake(MSW / 2 - 29, _textLabel.frame.size.height + _textLabel.frame.origin.y + 10, 58, 58);
+//        self.qqLabel.frame = CGRectMake(self.qqBtn.frame.origin.x, self.qqBtn.frame.origin.y + self.qqBtn.frame.size.height + 10, self.qqBtn.frame.size.width, 14);
+//        
+//    }
+//    
+//    else  if ([self.qqcode isEqualToString:@"0"] && [self.wxcode isEqualToString:@"0"])
+//    {
+//        self.qqBtn.hidden=YES;
+//        self.qqLabel.hidden=YES;
+//        
+//        self.wxbtn.hidden=YES;
+//        self.wxlabel.hidden=YES;
+//        
+//        self.textLabel.hidden=YES;
+//    }
+//    
+//    else if ([self.qqcode isEqualToString:@"819c1"] && [self.wxcode isEqualToString:@"819c1"])
+//    {
+//        if ([WXApi isWXAppInstalled]) {
+//            //判断是有微信
+//            self.wxbtn.hidden= NO;
+//            self.wxbtn.hidden = NO;
+//            /*
+//             self.qqBtn.frame = CGRectMake(MSW / 2 - 29, _textLabel.frame.size.height + _textLabel.frame.origin.y + 10, 58, 58);
+//             self.qqLabel.frame =  CGRectMake(self.qqBtn.frame.origin.x, self.qqBtn.frame.origin.y + self.qqBtn.frame.size.height + 10, self.qqBtn.frame.size.width, 14);
+//             */
+//            
+//        }
+//        else
+//        {
+//            self.wxbtn.hidden = YES;
+//            self.wxlabel.hidden = YES;
+//            /*
+//             //self.qqBtn.frame = self.wxbtn.frame;
+//             //self.qqLabel.frame = self.wxlabel.frame;
+//             */
+//            self.qqBtn.frame = CGRectMake(MSW / 2 - 29, _textLabel.frame.size.height + _textLabel.frame.origin.y + 10, 58, 58);
+//            self.qqLabel.frame = CGRectMake(self.qqBtn.frame.origin.x, self.qqBtn.frame.origin.y + self.qqBtn.frame.size.height + 10, self.qqBtn.frame.size.width, 14);
+//        }
+//
+//    }
+//        
+// }
+//    else
+//    {
+//        
     }
 }
 
