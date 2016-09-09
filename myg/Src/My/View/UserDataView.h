@@ -19,4 +19,8 @@
 @property (nonatomic, strong) UIButton *loginBtn; //登录
 @property (nonatomic, strong) UILabel *nameLabel; //名字
 @property (nonatomic, strong) UILabel *yueLabel; //余额
+
+@property (nonatomic,strong)UIView *verifyView;
+@property (nonatomic,strong)UIButton *verifyBtn;
+
 @end

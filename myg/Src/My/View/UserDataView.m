@@ -8,6 +8,9 @@
 
 #import "UserDataView.h"
 
+
+
+
 @implementation UserDataView
 
 - (id)initWithFrame:(CGRect)frame
@@ -52,7 +55,7 @@
     [self addSubview:_haedBtn];
     
     //    用户头像
-    _imgheadview=[[UIImageView alloc]initWithFrame:CGRectMake((MSW - 72)/2,68, 72, 72)];
+    _imgheadview=[[UIImageView alloc]initWithFrame:CGRectMake((MSW - 72)/2,48, 72, 72)];
     _imgheadview.contentMode = UIViewContentModeScaleAspectFill;
     _imgheadview.image = [UIImage imageNamed:@"head1"];
     _imgheadview.layer.masksToBounds = YES;
@@ -62,7 +65,7 @@
    
     
     //名字label
-    self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(MSW / 2 - 100, 68 + 72+5, 200, 20)];
+    self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(MSW / 2 - 100, 48 + 72+5, 200, 20)];
     self.nameLabel.font = [UIFont systemFontOfSize:16];
     self.nameLabel.textColor = [UIColor whiteColor];
 //    _nameLabel.backgroundColor=[UIColor whiteColor];
@@ -102,6 +105,44 @@
     [self addSubview:self.topUpBtn];
     self.topUpBtn.hidden = YES;
 
+    
+//    UIImageView *verifyImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"verify_logo"]];
+//    verifyImage.frame = CGRectMake(5, 0, verifyImage.image.size.width, verifyImage.image.size.height);
+//    [self.verifyView addSubview:verifyImage];
+
+    self.verifyView = [[UIView alloc]initWithFrame:CGRectMake(0, IPhone4_5_6_6P(230-35, 230-35, (MSW/1.53)-35, 270-35), MSW, 35)];
+    [self addSubview:self.verifyView];
+    
+    self.verifyView.backgroundColor = [UIColor lightGrayColor];
+    
+    self.verifyView.hidden = YES;
+    
+    
+    [self createVerifyView];
+    
 }
+
+- (void)createVerifyView{
+    
+    UIImageView *verifyIMG = [[UIImageView alloc]initWithFrame:CGRectMake(15, 5, 25, 25)];
+    verifyIMG.image = [UIImage imageNamed:@"verify_logo"];
+    [self.verifyView addSubview:verifyIMG];
+    
+    UILabel *textlb = [[UILabel alloc]initWithFrame:CGRectMake(verifyIMG.frame.origin.x+verifyIMG.frame.size.width+10, 5, MSW-100, 25)];
+    textlb.text = @"为方便及时收取中奖信息，请尽快绑定手机号码！";
+    textlb.font = [UIFont systemFontOfSize:11.f];
+    textlb.textColor = [UIColor redColor];
+    [self.verifyView addSubview:textlb];
+    
+    self.verifyBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.verifyBtn setTitle:@"立即绑定" forState:UIControlStateNormal];
+    self.verifyBtn.titleLabel.font = [UIFont systemFontOfSize:11.f];
+    
+    self.verifyBtn.frame = CGRectMake(MSW-100, 5, 100, 25);
+    [self.verifyView addSubview:self.verifyBtn];
+    
+    
+}
+
 
 @end

@@ -85,6 +85,10 @@
 @property (nonatomic, strong) AwardTipView    *awardTipView;
 /** 中奖提示索引 */
 @property (nonatomic, assign) int             index;
+
+@property (nonatomic,strong)UIView *verifyView;
+
+
 @end
 
 @implementation MyViewController
@@ -102,7 +106,27 @@
 
     [self createUI ];
     
+//    [self createVerifyView];
+    
 }
+/**
+ *  创建验证view
+ */
+- (void)createVerifyView{
+    
+    
+    self.verifyView = [[UIView alloc]initWithFrame:CGRectMake(0, IPhone4_5_6_6P(230-30, 230-30, (MSW/1.53)-46, 270-46), MSW, IPhone4_5_6_6P(30, 30, 30, 30))];
+    self.verifyView.backgroundColor = [UIColor redColor];
+    
+    [tbView addSubview:self.verifyView];
+    
+    [self.verifyView bringSubviewToFront:tbView];
+    
+    
+    
+    
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -117,6 +141,7 @@
     {
         self.userDataView.loginBtn.hidden = YES;
         self.userDataView.topUpBtn.hidden = NO;
+        
     }
     else
     {
@@ -192,10 +217,17 @@
             {
                 self.userDataView.loginBtn.hidden = YES;
                 
+                
                 if ([_model.validToken isEqualToString:@"u8122576178c"])
                 {
                     self.userDataView.topUpBtn.hidden = NO;
                 }
+                DebugLog(@"%@",_model.mobile);
+#warning 验证
+                if ([_model.mobile isEqual:@""]) {
+                    self.userDataView.verifyView.hidden = NO;
+                }
+                
                 
                 DebugLog(@"头像：%@",_model.img);
                 [self.userDataView.imgheadview sd_setImageWithURL:[NSURL URLWithString:_model.img ] placeholderImage:[UIImage imageNamed:@"head1"]];
