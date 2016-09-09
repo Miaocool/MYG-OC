@@ -375,6 +375,7 @@
     [dict setValue:self.password forKey:@"password"];
     [dict setValue:self.phoneNum forKey:@"mobile"];
     [dict setValue:self.tid forKey:@"tid"];
+    [dict setValue:@"ios" forKey:@"device"];
     DebugLog(@"%@",dict[@"code"]);
     DebugLog(@"%@",dict[@"nickname"]);
     DebugLog(@"%@",dict[@"password"]);

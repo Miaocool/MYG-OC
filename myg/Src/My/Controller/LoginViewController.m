@@ -347,6 +347,7 @@
                 [dict setValue:[userInfo uid] forKey:@"openid"];
                 [dict setValue:[userInfo nickname] forKey:@"nickname"];
                 [dict setValue:@"3" forKey:@"loginType"];
+                [dict setValue:@"ios" forKey:@"device"];
                 [dict setValue:[userInfo profileImage] forKey:@"profileImage"];
                 
                 [MDYAFHelp AFPostHost:APPHost bindPath:ThirdLogin postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
@@ -393,6 +394,7 @@
                                        [dict2 setValue:[userInfo nickname] forKey:@"nickname"];
                                        [dict2 setValue:[userInfo profileImage] forKey:@"profileImage"];
                                        [dict2 setValue:@"1" forKey:@"loginType"];
+                                       [dict2 setValue:@"ios" forKey:@"device"];
                                        
                                        [MDYAFHelp AFPostHost:APPHost bindPath:ThirdLogin postParam:dict2 getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
                                            //                                       DebugLog(@"===================%@",responseDic);
@@ -433,6 +435,7 @@
                 [dict2 setValue:[userInfo uid] forKey:@"uid"];
                 [dict2 setValue:dict[@"unionid"] forKey:@"openid"];
                 [dict2 setValue:[userInfo nickname] forKey:@"nickname"];
+                [dict2 setValue:@"ios" forKey:@"device"];
                 [dict2 setValue:@"2" forKey:@"loginType"];
                 [dict2 setValue:[userInfo profileImage] forKey:@"profileImage"];
                 
