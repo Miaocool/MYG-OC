@@ -839,7 +839,7 @@
             
         }else{
             _isSelected=YES;
-            [dict setValue:@"" forKey:@"pid"];
+            [dict setValue:@"10" forKey:@"pid"];
         }
         
         DebugLog(@"==---%@",_model.type_id);
