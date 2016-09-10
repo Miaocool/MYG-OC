@@ -36,6 +36,9 @@
 #import "AwardTipView.h"
 #import "GoodsModel.h"
 
+#import "PromptlyViewController.h"
+
+#import "UserPhoneViewController.h"
 
 @interface MyViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate, CloseTipViewDelegate>
 {
@@ -106,26 +109,9 @@
 
     [self createUI ];
     
-//    [self createVerifyView];
     
 }
-/**
- *  创建验证view
- */
-- (void)createVerifyView{
-    
-    
-    self.verifyView = [[UIView alloc]initWithFrame:CGRectMake(0, IPhone4_5_6_6P(230-30, 230-30, (MSW/1.53)-46, 270-46), MSW, IPhone4_5_6_6P(30, 30, 30, 30))];
-    self.verifyView.backgroundColor = [UIColor redColor];
-    
-    [tbView addSubview:self.verifyView];
-    
-    [self.verifyView bringSubviewToFront:tbView];
-    
-    
-    
-    
-}
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -226,6 +212,9 @@
 #warning 验证
                 if ([_model.mobile isEqual:@""]) {
                     self.userDataView.verifyView.hidden = NO;
+                    
+                    [self.userDataView.verifyBtn addTarget:self action:@selector(promptlyAction) forControlEvents:UIControlEventTouchUpInside];
+                    
                 }
                 
                 
@@ -263,6 +252,33 @@
         [SVProgressHUD showErrorWithStatus:@"网络不给力"];
     }];
     
+}
+/**
+ *  立即验证
+ */
+- (void)promptlyAction{
+    
+    DebugLog(@"立即验证%@",self.navigationController.navigationBar);
+    
+    PromptlyViewController *promptVC = [[PromptlyViewController alloc]init];
+    promptVC.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:promptVC animated:YES];
+    
+    
+//    SetUpViewController *setUpVC = [[SetUpViewController alloc]init];
+//    setUpVC.share_img = _share_img;
+//    setUpVC.hidesBottomBarWhenPushed=YES;
+//    [self.navigationController pushViewController:setUpVC animated:YES];
+    
+//    UserPhoneViewController *uu = [UserPhoneViewController new];
+//    [self.navigationController pushViewController:uu animated:YES];
+    
+    
+    
+    
+//    LoginViewController *loginVC = [[LoginViewController alloc]init];
+//    loginVC.hidesBottomBarWhenPushed=YES;
+//    [self.navigationController pushViewController:loginVC animated:YES];
 }
 
 #pragma mark - 创建UI
@@ -893,6 +909,7 @@
     {
 //        if ([UserDataSingleton userInformation].isLogin == YES)
 //        {
+        DebugLog(@"立即验证%@",self.navigationController.navigationBar);
 //            //设置
             SetUpViewController *setUpVC = [[SetUpViewController alloc]init];
             setUpVC.share_img = _share_img;

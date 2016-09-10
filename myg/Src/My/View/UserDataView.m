@@ -131,10 +131,11 @@
     UILabel *textlb = [[UILabel alloc]initWithFrame:CGRectMake(verifyIMG.frame.origin.x+verifyIMG.frame.size.width+10, 5, MSW-100, 25)];
     textlb.text = @"为方便及时收取中奖信息，请尽快绑定手机号码！";
     textlb.font = [UIFont systemFontOfSize:11.f];
-    textlb.textColor = [UIColor redColor];
+    textlb.textColor = [UIColor colorWithRed:0.797 green:0.000 blue:0.000 alpha:1.000];
     [self.verifyView addSubview:textlb];
     
-    self.verifyBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.verifyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.verifyBtn setTintColor:[UIColor colorWithRed:0.000 green:0.002 blue:0.782 alpha:1.000]];
     [self.verifyBtn setTitle:@"立即绑定" forState:UIControlStateNormal];
     self.verifyBtn.titleLabel.font = [UIFont systemFontOfSize:11.f];
     

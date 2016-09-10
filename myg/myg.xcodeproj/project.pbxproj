@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18829AFD1D83A71600E5B4BD /* PromptlyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18829AFC1D83A71600E5B4BD /* PromptlyViewController.m */; };
 		1883AC651D6EBAB80001DDC1 /* LogisticInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1883AC641D6EBAB80001DDC1 /* LogisticInfoVC.m */; };
 		191DD47F1C085716003CABD8 /* Address.plist in Resources */ = {isa = PBXBuildFile; fileRef = 191DD47E1C085716003CABD8 /* Address.plist */; };
 		191DD4821C0C42DE003CABD8 /* ListingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 191DD4811C0C42DE003CABD8 /* ListingModel.m */; };
@@ -402,6 +403,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		18829AFB1D83A71600E5B4BD /* PromptlyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PromptlyViewController.h; sourceTree = "<group>"; };
+		18829AFC1D83A71600E5B4BD /* PromptlyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PromptlyViewController.m; sourceTree = "<group>"; };
 		1883AC631D6EBAB80001DDC1 /* LogisticInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogisticInfoVC.h; sourceTree = "<group>"; };
 		1883AC641D6EBAB80001DDC1 /* LogisticInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogisticInfoVC.m; sourceTree = "<group>"; };
 		191DD47E1C085716003CABD8 /* Address.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Address.plist; sourceTree = "<group>"; };
@@ -2125,6 +2128,8 @@
 				19665CC31BFAB841005591E1 /* AddAddressViewController.m */,
 				D86415631C06D55F008D3A88 /* AlterAddressViewController.h */,
 				D86415641C06D55F008D3A88 /* AlterAddressViewController.m */,
+				18829AFB1D83A71600E5B4BD /* PromptlyViewController.h */,
+				18829AFC1D83A71600E5B4BD /* PromptlyViewController.m */,
 			);
 			name = userData;
 			path = ../../Listing/Controller;
@@ -3163,6 +3168,7 @@
 				195955621BF03576004B983F /* UIButton+AFNetworking.m in Sources */,
 				1959554D1BF03576004B983F /* SDWebImageDownloaderOperation.m in Sources */,
 				D88308111C1291AA00705EC0 /* APAuthV2Info.m in Sources */,
+				18829AFD1D83A71600E5B4BD /* PromptlyViewController.m in Sources */,
 				19BF122F1BF0345000018261 /* AppDelegate.m in Sources */,
 				195955321BF03576004B983F /* AFURLSessionManager.m in Sources */,
 				D8E001841C3BCA65000B7A2F /* JHLeadViewController.m in Sources */,
