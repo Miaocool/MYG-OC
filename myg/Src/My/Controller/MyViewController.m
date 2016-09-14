@@ -137,6 +137,13 @@
         self.userDataView.nameLabel.text = @"";
         self.userDataView.yueLabel.text = @"";
         _imgheadview.image=[UIImage imageNamed:@"head"];
+     
+        if ([_model.mobile isEqual:@""]) {
+            self.userDataView.verifyView.hidden = YES;
+            [self.userDataView.verifyBtn addTarget:self action:@selector(promptlyAction) forControlEvents:UIControlEventTouchUpInside];
+            
+
+        }
     }
     
     [tbView reloadData];

@@ -134,9 +134,10 @@
     textlb.textColor = [UIColor colorWithRed:0.797 green:0.000 blue:0.000 alpha:1.000];
     [self.verifyView addSubview:textlb];
     
-    self.verifyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.verifyBtn setTintColor:[UIColor colorWithRed:0.000 green:0.002 blue:0.782 alpha:1.000]];
+    self.verifyBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+//    [self.verifyBtn setTintColor:[UIColor colorWithRed:0.000 green:0.002 blue:0.782 alpha:1.000]];
     [self.verifyBtn setTitle:@"立即绑定" forState:UIControlStateNormal];
+    self.verifyBtn.titleLabel.textColor = [UIColor colorWithRed:0.000 green:0.002 blue:1.000 alpha:0.645];
     self.verifyBtn.titleLabel.font = [UIFont systemFontOfSize:11.f];
     
     self.verifyBtn.frame = CGRectMake(MSW-100, 5, 100, 25);

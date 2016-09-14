@@ -264,7 +264,7 @@
             if ([responseDic[@"code"] isEqualToString:@"200"]) {
                 
                 [SVProgressHUD dismiss];
-                UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"" message:@"修改成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"" message:@"验证成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                 [alert2 show];
                 
                 
@@ -273,7 +273,7 @@
             }else{
                 
                 DebugLog(@"修改失败");
-                [SVProgressHUD showErrorWithStatus:@"修改失败"];
+                [SVProgressHUD showErrorWithStatus:@"验证失败"];
                 
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

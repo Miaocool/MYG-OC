@@ -798,6 +798,8 @@
     self.canyuArray =[NSMutableArray array];
 }
 
+#warning 字体颜色 验证
+
 #pragma mark - 下拉刷新
 - (void)refreshData
 {
