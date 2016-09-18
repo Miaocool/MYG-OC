@@ -55,6 +55,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 
 {
+    
+    
+    
+    
     //修改启动页停留时间
     [NSThread sleepForTimeInterval:3];
     
