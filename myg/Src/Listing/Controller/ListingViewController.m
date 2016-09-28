@@ -195,6 +195,8 @@
 - (void)refreshData
 {
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+    
+    
     if (_isDelete == YES)
     {
         [_editButton setImage:[UIImage imageNamed:@"icon_edit"] forState:UIControlStateNormal];
@@ -248,6 +250,10 @@
                 {
                     [[UserDataSingleton userInformation].shoppingArray removeObjectAtIndex:idx];
                 }
+                
+                
+                
+                
                 
                 
                 ShoppingModel*model1=[[UserDataSingleton userInformation].shoppingArray objectAtIndex:idx];

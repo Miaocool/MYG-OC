@@ -134,19 +134,21 @@
         
         _lbguzhang.hidden=YES;
         _lblTime.hidden=NO;
+
+        
+        
     self.minutes =[_latestModel.waittime intValue] / 60;
     self.seconds = [_latestModel.waittime intValue] % 60;
+
     self.ms = 0;
         
         
     if(!self.timer)
     {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.009f target:self selector:@selector(showCount:) userInfo:nil repeats:YES];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.01f target:self selector:@selector(showCount:) userInfo:nil repeats:YES];
         //把定时器放到子线程
-        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
+        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     }
-    
-
     }
     else
     {
@@ -207,6 +209,8 @@
     self.lblTime.frame= CGRectMake(imgHeight + 20+20+10, 72,[UIScreen mainScreen].bounds.size.width - imgHeight - 30,30);
     _lblTime.font = [UIFont systemFontOfSize:30];
      self.lblTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d",self.minutes,self.seconds,self.ms];
+    _latestModel.used_time = [NSString stringWithFormat:@"%zd",self.minutes*60+self.seconds];
+    
     if (self.seconds == 0 && self.ms == 0 && self.minutes == 0)
     {
         

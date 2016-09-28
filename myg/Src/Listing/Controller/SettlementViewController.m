@@ -997,13 +997,22 @@
 }
 
 -(void)weixinpayOk:(NSNotification *)noti{
+    
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
+//    [SVProgressHUD showSuccessWithStatus:@"加载中" duration:10];
+    
     [self payOrdCallback:@"1"];
     
 }
 
 -(void)weixinpayCancel{
     
+   
+
     [SVProgressHUD showErrorWithStatus:@"取消支付"];
+//     [SVProgressHUD showSuccessWithStatus:@"" duration:10];
+    
+//    [SVProgressHUD showWithStatus:@"" maskType:SVProgressHUDMaskTypeBlack];
 }
 
 -(void)weixinpayFail{
@@ -1050,6 +1059,8 @@
     
     [MDYAFHelp AFPostHost:APPHost bindPath:Callback postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
         DebugLog(@"------%@",responseDic);
+        
+        
         
         [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
         

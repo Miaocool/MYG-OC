@@ -61,7 +61,6 @@
 - (void)initData
 {
 }
-
 -(void)fanhui{
     [self.navigationController popToRootViewControllerAnimated:YES];
 

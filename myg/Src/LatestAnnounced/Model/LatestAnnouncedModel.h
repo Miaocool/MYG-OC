@@ -33,6 +33,8 @@
 
 @property (nonatomic, copy) NSString *img; //限购
 
+@property (nonatomic, copy)NSString *used_time;
+
 /*
  email = "52jscn@163.com"; 
  img = "http://yyxb.maipiaoqu.com/statics/uploads/photo/member.jpg";
