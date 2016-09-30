@@ -15,6 +15,7 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "WXApi.h"
 #import "WeiboSDK.h"
+#import "JPUSHService.h"
 @interface LoginViewController ()<UITextFieldDelegate>{
      NSMutableDictionary                 *_infoDict;
     
@@ -485,6 +486,8 @@
     [userDefauts setObject:data[@"img"] forKey:@"profileImage"];
     
     [UserDataSingleton userInformation].uid=EncodeFormDic(data,@"uid");
+     [JPUSHService setAlias:[NSString stringWithFormat:@"%@",[UserDataSingleton userInformation].uid] callbackSelector:nil object:self];
+    
     [UserDataSingleton userInformation].code=EncodeFormDic(data,@"code");
     [UserDataSingleton userInformation].img=EncodeFormDic(data,@"img");
     [UserDataSingleton userInformation].isLogin=YES;
@@ -549,7 +552,7 @@
                   [UserDataSingleton userInformation].isLogin = YES;
                   [UserDataSingleton userInformation].code = dict[@"code"];
                   [UserDataSingleton userInformation].uid = dict[@"uid"];
-
+                   [JPUSHService setAlias:[NSString stringWithFormat:@"%@",[UserDataSingleton userInformation].uid] callbackSelector:nil object:self];
                   DebugLog(@"!!!!!!!!!!!!!!!!%@,%@",dict[@"uid"],dict[@"code"]);
                   [self.navigationController popViewControllerAnimated:YES];
               }

@@ -40,7 +40,14 @@
 #import "NavViewController.h"
 #import "LogisticInfoVC.h"
 #import "UMMobClick/MobClick.h"
-@interface AppDelegate ()<WXApiDelegate>
+
+#import "JPUSHService.h"
+#import <AdSupport/AdSupport.h>
+#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+#import <UserNotifications/UserNotifications.h>
+#endif
+
+@interface AppDelegate ()<WXApiDelegate,JPUSHRegisterDelegate>
 {
     NSString *Newurl;
     NSString *Renew;
@@ -55,8 +62,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 
 {
-    
-    
+    //极光推送
+    [self registerPushdic:launchOptions];
     
     
     //修改启动页停留时间
@@ -95,19 +102,23 @@
                            wechatCls:[WXApi class]];
     
     
-    // iOS8 上需要使用新的 API
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
-        UIUserNotificationType myTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-        
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:myTypes categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    }else {
-        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
-    }
-    //从服务器动态获取推送key
-    [self httpGetPromptWithLaunchOptions:launchOptions];
-
+//    // iOS8 上需要使用新的 API
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+//        UIUserNotificationType myTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+//        
+//        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:myTypes categories:nil];
+//        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+//    }else {
+//        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
+//        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
+//    }
+//    //从服务器动态获取推送key
+//    [self httpGetPromptWithLaunchOptions:launchOptions];
+//
+//
+    
+    
+    
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
@@ -137,13 +148,54 @@
     //改变状态栏
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
-    
-    
     [self statisticsData];
     
     return YES;
 }
 
+#pragma mark - 极光推送注册
+- (void)registerPushdic:(NSDictionary *)launchOptions{
+    
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
+#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+        JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
+        entity.types = UNAuthorizationOptionAlert|UNAuthorizationOptionBadge|UNAuthorizationOptionSound;
+        [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+#endif
+    } else if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+        //可以添加自定义categories
+        [JPUSHService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                          UIUserNotificationTypeSound |
+                                                          UIUserNotificationTypeAlert)
+                                              categories:nil];
+    } else {
+        //categories 必须为nil
+                [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                                  UIRemoteNotificationTypeSound |
+                                                                  UIRemoteNotificationTypeAlert)
+                                                      categories:nil];
+    }
+    //如不需要使用IDFA，advertisingIdentifier 可为nil
+    [JPUSHService setupWithOption:launchOptions appKey:@"297db811180c7fc01cb3c887"
+                          channel:nil
+                 apsForProduction:nil
+            advertisingIdentifier:nil];
+    //
+    //2.1.9版本新增获取registration id block接口。
+    [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
+        if(resCode == 0){
+            DebugLog(@"registrationID获取成功：%@",registrationID);
+            
+        }
+        else{
+            DebugLog(@"registrationID获取失败，code：%d",resCode);
+        }
+    }];
+
+    
+    
+    
+}
 #pragma mark -友盟统计数据
 - (void)statisticsData{
     
@@ -161,52 +213,55 @@
     
 }
 
+
+
+
 #pragma mark 从服务器动态获取推送key
 - (void)httpGetPromptWithLaunchOptions:(NSDictionary *)launchOptions
 {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    
-    [dict setValue:@"2" forKey:@"type"];
-    [dict setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"ver"];
-    [MDYAFHelp AFPostHost:APPHost bindPath:Prompt postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
-        
-        DebugLog(@"res = %@",responseDic);
-        if ([EncodeFormDic(responseDic, @"code") isEqualToString:@"200"]) {
-            
-            NSDictionary *dataDic = responseDic[@"data"];
-            
-            NSString *bPushKey = EncodeFormDic(dataDic, @"bd_pushkey");
-            
-            //#warning 上线 AppStore 时需要修改 pushMode 需要修改Apikey为自己的Apikey
-            // 在 App 启动时注册百度云推送服务，需要提供 Apikey
-            //  企业 60pDiM16ye7CwbZRWMbuNffZ    商店 j9jDdNOKYySHgl8MXCUf8kiI
-            [BPush registerChannel:launchOptions apiKey:bPushKey pushMode:BPushModeProduction withFirstAction:nil withSecondAction:nil withCategory:nil isDebug:YES];
-            // App 是用户点击推送消息启动
-            NSDictionary *userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-            if (userInfo) {
-                //  DebugLog(@"从消息启动:%@",userInfo);
-                [BPush handleNotification:userInfo];
-            }
-            
-            //角标清0
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-            /*
-             // 测试本地通知
-             [self performSelector:@selector(testLocalNotifi) withObject:nil afterDelay:1.0];
-             */
-            
-            //是否开启一键加群
-            [UserDataSingleton userInformation].is_qq = EncodeFormDic(dataDic, @"is_qq");
-            //一键加群的key
-            [UserDataSingleton userInformation].qq_groupkey = EncodeFormDic(dataDic, @"qq_groupkey");
-            //是否开启推送
-            [UserDataSingleton userInformation].is_push = EncodeFormDic(dataDic, @"is_push");
-
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
+//    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+//    
+//    [dict setValue:@"2" forKey:@"type"];
+//    [dict setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"ver"];
+//    [MDYAFHelp AFPostHost:APPHost bindPath:Prompt postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
+//        
+//        DebugLog(@"res = %@",responseDic);
+//        if ([EncodeFormDic(responseDic, @"code") isEqualToString:@"200"]) {
+//            
+//            NSDictionary *dataDic = responseDic[@"data"];
+//            
+//            NSString *bPushKey = EncodeFormDic(dataDic, @"bd_pushkey");
+//            
+//            //#warning 上线 AppStore 时需要修改 pushMode 需要修改Apikey为自己的Apikey
+//            // 在 App 启动时注册百度云推送服务，需要提供 Apikey
+//            //  企业 60pDiM16ye7CwbZRWMbuNffZ    商店 j9jDdNOKYySHgl8MXCUf8kiI
+//            [BPush registerChannel:launchOptions apiKey:bPushKey pushMode:BPushModeProduction withFirstAction:nil withSecondAction:nil withCategory:nil isDebug:YES];
+//            // App 是用户点击推送消息启动
+//            NSDictionary *userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+//            if (userInfo) {
+//                //  DebugLog(@"从消息启动:%@",userInfo);
+//                [BPush handleNotification:userInfo];
+//            }
+//            
+//            //角标清0
+//            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+//            /*
+//             // 测试本地通知
+//             [self performSelector:@selector(testLocalNotifi) withObject:nil afterDelay:1.0];
+//             */
+//            
+//            //是否开启一键加群
+//            [UserDataSingleton userInformation].is_qq = EncodeFormDic(dataDic, @"is_qq");
+//            //一键加群的key
+//            [UserDataSingleton userInformation].qq_groupkey = EncodeFormDic(dataDic, @"qq_groupkey");
+//            //是否开启推送
+//            [UserDataSingleton userInformation].is_push = EncodeFormDic(dataDic, @"is_push");
+//
+//        }
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//    }];
 }
 
 
@@ -372,6 +427,10 @@
         [UserDataSingleton userInformation].uid = [userDefaultes objectForKey:@"uid"];
         [UserDataSingleton userInformation].code = [userDefaultes objectForKey:@"code"];
         [UserDataSingleton userInformation].isLogin = YES;
+        
+        // 用户id，作为推送的唯一标示
+        [JPUSHService setAlias:[NSString stringWithFormat:@"%@",[UserDataSingleton userInformation].uid] callbackSelector:nil object:self];
+        
     }
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setValue:[UserDataSingleton userInformation].uid forKey:@"yhid"];
@@ -418,10 +477,6 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -549,86 +604,130 @@
 }
 
 #pragma mark - 推送
-- (void)application:(UIApplication *)application
-didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    DebugLog(@"%@", [NSString stringWithFormat:@"Device Token: %@", deviceToken]);
-    [BPush registerDeviceToken:deviceToken];
-    [BPush bindChannelWithCompleteHandler:^(id result, NSError *error) {
-        
-        //    DLog(@"%@",result)
-        NSDictionary *dic = result;
-        NSString *channelId1 = EncodeFormDic(dic, @"channel_id");
-        NSDictionary *response_params = dic[@"response_params"];
-        NSString *channelId3 = EncodeFormDic(response_params, @"channel_id");
-        [UserDataSingleton userInformation].channelId = [channelId1 isEqualToString:@""]?channelId3:channelId1;
-        DebugLog(@"%@",[UserDataSingleton userInformation].channelId);
-        
-        //EncodeFormDic(response_params, @"appid"),
-        //EncodeFormDic(response_params, @"channel_id"),
-        //EncodeFormDic(response_params, @"user_id")
-        
-    }];
+//- (void)application:(UIApplication *)application
+//didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+//    DebugLog(@"%@", [NSString stringWithFormat:@"Device Token: %@", deviceToken]);
+//    // 注册deviceToken
+//     [JPUSHService registerDeviceToken:deviceToken];
+//    
+////    [BPush registerDeviceToken:deviceToken];
+////    [BPush bindChannelWithCompleteHandler:^(id result, NSError *error) {
+////        
+////        //    DLog(@"%@",result)
+////        NSDictionary *dic = result;
+////        NSString *channelId1 = EncodeFormDic(dic, @"channel_id");
+////        NSDictionary *response_params = dic[@"response_params"];
+////        NSString *channelId3 = EncodeFormDic(response_params, @"channel_id");
+////        [UserDataSingleton userInformation].channelId = [channelId1 isEqualToString:@""]?channelId3:channelId1;
+////        DebugLog(@"%@",[UserDataSingleton userInformation].channelId);
+////        
+////        //EncodeFormDic(response_params, @"appid"),
+////        //EncodeFormDic(response_params, @"channel_id"),
+////        //EncodeFormDic(response_params, @"user_id")
+////        
+////    }];
+//}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken
+{
+    
+    [JPUSHService registerDeviceToken:deviceToken];
     
 }
-
 - (void)application:(UIApplication *)application
 didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     DebugLog(@"did Fail To Register For Remote Notifications With Error: %@", error);
     
 }
-
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
-- (void)application:(UIApplication *)application
-didRegisterUserNotificationSettings:
-(UIUserNotificationSettings *)notificationSettings {
-    [application registerForRemoteNotifications];
+#pragma mark- JPUSHRegisterDelegate
+// iOS 10 Support
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
+    // Required
+    NSDictionary * userInfo = notification.request.content.userInfo;
+    if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        [JPUSHService handleRemoteNotification:userInfo];
+    }
+    completionHandler(UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置
 }
-
-- (void)application:(UIApplication *)application
-handleActionWithIdentifier:(NSString *)identifier
-forLocalNotification:(UILocalNotification *)notification
-  completionHandler:(void (^)())completionHandler {
-}
-
-- (void)application:(UIApplication *)application
-handleActionWithIdentifier:(NSString *)identifier
-forRemoteNotification:(NSDictionary *)userInfo
-  completionHandler:(void (^)())completionHandler {
-}
-#endif
-- (void)application:(UIApplication *)application
-didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    // App 收到推送的通知
-    DebugLog(@"%@",userInfo);
-    [BPush handleNotification:userInfo];
-    DebugLog(@"收到通知:%@", [self logDic:userInfo]);
-//    HomeViewController *home=(HomeViewController *)[[[self.tabBarController.viewControllers objectAtIndex:0] viewControllers] objectAtIndex:0];
-//    [home getAPNS:userInfo];
-//    completionHandler(UIBackgroundFetchResultNewData);
-}
-
-- (void)application:(UIApplication *)application
-didReceiveRemoteNotification:(NSDictionary *)userInfo
-fetchCompletionHandler:
-(void (^)(UIBackgroundFetchResult))completionHandler {
+// iOS 10 Support
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    // Required
     
-    DebugLog(@"%@",userInfo);
-    [BPush handleNotification:userInfo];
-    DebugLog(@"收到通知:%@", [self logDic:userInfo]);
+    NSDictionary * userInfo = response.notification.request.content.userInfo;
+    if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        [JPUSHService handleRemoteNotification:userInfo];
+    }
+    completionHandler();  // 系统要求执行这个方法
+}
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     
-    //    [self.tabBarController getAPNS:userInfo];
-//    HomeViewController *home = (HomeViewController *)[UITabBarController objectAtIndex:0];
-//    HomeViewController *home=[[HomeViewController alloc]init];
-//    [home getAPNS:userInfo];
+    // Required, iOS 7 Support
+    [JPUSHService handleRemoteNotification:userInfo];
     completionHandler(UIBackgroundFetchResultNewData);
 }
-
-- (void)application:(UIApplication *)application
-didReceiveLocalNotification:(UILocalNotification *)notification {
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
-    DebugLog(@"接收本地通知啦！！！");
-    [BPush showLocalNotificationAtFront:notification identifierKey:nil];
+    // Required,For systems with less than or equal to iOS6
+    [JPUSHService handleRemoteNotification:userInfo];
 }
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    [application setApplicationIconBadgeNumber:0];
+    [application cancelAllLocalNotifications];
+}
+
+
+//#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
+//- (void)application:(UIApplication *)application
+//didRegisterUserNotificationSettings:
+//(UIUserNotificationSettings *)notificationSettings {
+//    [application registerForRemoteNotifications];
+//}
+//
+//- (void)application:(UIApplication *)application
+//handleActionWithIdentifier:(NSString *)identifier
+//forLocalNotification:(UILocalNotification *)notification
+//  completionHandler:(void (^)())completionHandler {
+//}
+//
+//- (void)application:(UIApplication *)application
+//handleActionWithIdentifier:(NSString *)identifier
+//forRemoteNotification:(NSDictionary *)userInfo
+//  completionHandler:(void (^)())completionHandler {
+//}
+//#endif
+//- (void)application:(UIApplication *)application
+//didReceiveRemoteNotification:(NSDictionary *)userInfo {
+//    // App 收到推送的通知
+//    DebugLog(@"%@",userInfo);
+//    [BPush handleNotification:userInfo];
+//    DebugLog(@"收到通知:%@", [self logDic:userInfo]);
+////    HomeViewController *home=(HomeViewController *)[[[self.tabBarController.viewControllers objectAtIndex:0] viewControllers] objectAtIndex:0];
+////    [home getAPNS:userInfo];
+////    completionHandler(UIBackgroundFetchResultNewData);
+//}
+//
+//- (void)application:(UIApplication *)application
+//didReceiveRemoteNotification:(NSDictionary *)userInfo
+//fetchCompletionHandler:
+//(void (^)(UIBackgroundFetchResult))completionHandler {
+//    
+//    DebugLog(@"%@",userInfo);
+//    [BPush handleNotification:userInfo];
+//    DebugLog(@"收到通知:%@", [self logDic:userInfo]);
+//    
+//    //    [self.tabBarController getAPNS:userInfo];
+////    HomeViewController *home = (HomeViewController *)[UITabBarController objectAtIndex:0];
+////    HomeViewController *home=[[HomeViewController alloc]init];
+////    [home getAPNS:userInfo];
+//    completionHandler(UIBackgroundFetchResultNewData);
+//}
+//
+//- (void)application:(UIApplication *)application
+//didReceiveLocalNotification:(UILocalNotification *)notification {
+//    
+//    DebugLog(@"接收本地通知啦！！！");
+//    [BPush showLocalNotificationAtFront:notification identifierKey:nil];
+//}
 
 - (NSString *)logDic:(NSDictionary *)dic {
     if (![dic count]) {
@@ -649,14 +748,5 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                                      errorDescription:NULL];
     return [str stringByReplacingOccurrencesOfString:@"\\r\\n" withString:@"\n"];
 }
-
-
-
-
-
-
-
-
-
 
 @end
