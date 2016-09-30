@@ -53,7 +53,7 @@
     _lblTitle.lineBreakMode = NSLineBreakByTruncatingTail;
     [self addSubview:_lblTitle];
     
-    UILabel* lblName1 = [[UILabel alloc] initWithFrame:CGRectMake(100, 30+15+12, 40, 15)];
+    UILabel* lblName1 = [[UILabel alloc] initWithFrame:CGRectMake(100, 30+15+12, 45, 15)];
     lblName1.text = @"获得者:";
     lblName1.textColor = [UIColor lightGrayColor];
     lblName1.font = [UIFont systemFontOfSize:12];
