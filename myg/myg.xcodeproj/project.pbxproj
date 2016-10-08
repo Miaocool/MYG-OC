@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		18829AFD1D83A71600E5B4BD /* PromptlyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18829AFC1D83A71600E5B4BD /* PromptlyViewController.m */; };
 		1883AC651D6EBAB80001DDC1 /* LogisticInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1883AC641D6EBAB80001DDC1 /* LogisticInfoVC.m */; };
+		18B7BBD11DA8EAD000C8B98E /* MygappInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B7BBD01DA8EAD000C8B98E /* MygappInfoModel.m */; };
 		18FAEC601D9E0C89002C3D2A /* jpush-ios-2.1.9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18FAEC5E1D9E0C89002C3D2A /* jpush-ios-2.1.9.a */; };
 		18FAEC621D9E0D71002C3D2A /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18FAEC611D9E0D71002C3D2A /* CFNetwork.framework */; };
 		18FAEC641D9E0D87002C3D2A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18FAEC631D9E0D87002C3D2A /* CoreFoundation.framework */; };
@@ -415,6 +416,8 @@
 		18829AFC1D83A71600E5B4BD /* PromptlyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PromptlyViewController.m; sourceTree = "<group>"; };
 		1883AC631D6EBAB80001DDC1 /* LogisticInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogisticInfoVC.h; sourceTree = "<group>"; };
 		1883AC641D6EBAB80001DDC1 /* LogisticInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogisticInfoVC.m; sourceTree = "<group>"; };
+		18B7BBCF1DA8EAD000C8B98E /* MygappInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MygappInfoModel.h; sourceTree = "<group>"; };
+		18B7BBD01DA8EAD000C8B98E /* MygappInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MygappInfoModel.m; sourceTree = "<group>"; };
 		18FAEC5E1D9E0C89002C3D2A /* jpush-ios-2.1.9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.9.a"; sourceTree = "<group>"; };
 		18FAEC5F1D9E0C89002C3D2A /* JPUSHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPUSHService.h; sourceTree = "<group>"; };
 		18FAEC611D9E0D71002C3D2A /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -2204,6 +2207,8 @@
 				19BF122E1BF0345000018261 /* AppDelegate.m */,
 				1883AC631D6EBAB80001DDC1 /* LogisticInfoVC.h */,
 				1883AC641D6EBAB80001DDC1 /* LogisticInfoVC.m */,
+				18B7BBCF1DA8EAD000C8B98E /* MygappInfoModel.h */,
+				18B7BBD01DA8EAD000C8B98E /* MygappInfoModel.m */,
 				18FAEC5D1D9E0C89002C3D2A /* Lib */,
 				19BF12331BF0345000018261 /* Main.storyboard */,
 				19BF12361BF0345000018261 /* Images.xcassets */,
@@ -3463,6 +3468,7 @@
 				D82ECBCD1CC4D44F001863C9 /* NoNetwork.m in Sources */,
 				19665CB51BFAB7E2005591E1 /* LastStepViewController.m in Sources */,
 				D864155F1C069E25008D3A88 /* ExchangeViewController.m in Sources */,
+				18B7BBD11DA8EAD000C8B98E /* MygappInfoModel.m in Sources */,
 				D86BA7491C201E0A001DD82E /* BaoDetailModel.m in Sources */,
 				D84FDC4F1C12CD8700E26DE2 /* EGOCache.m in Sources */,
 				D86BA70D1C1FAE89001DD82E /* SVProgressHUD.m in Sources */,
@@ -3618,9 +3624,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = myg/myg.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: chunqing wang (4CU2T68XK7)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: chunqing wang (4CU2T68XK7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: chunqing wang (4CU2T68XK7)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: chunqing wang (X69Y3Y446P)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: chunqing wang (X69Y3Y446P)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: chunqing wang (X69Y3Y446P)";
 				DEVELOPMENT_TEAM = X69Y3Y446P;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
@@ -3658,8 +3664,8 @@
 				PODS_ROOT = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bxsapp.myg;
 				PRODUCT_NAME = myg;
-				PROVISIONING_PROFILE = "62667d87-3863-4c1b-a4b2-231a6284234d";
-				PROVISIONING_PROFILE_SPECIFIER = myg_dev;
+				PROVISIONING_PROFILE = "49057ab1-c512-4859-bd50-a882eb74798d";
+				PROVISIONING_PROFILE_SPECIFIER = myg_dis;
 			};
 			name = Debug;
 		};

@@ -999,6 +999,9 @@
 -(void)weixinpayOk:(NSNotification *)noti{
     
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
+    
+//    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeBlack];
+    
 //    [SVProgressHUD showSuccessWithStatus:@"加载中" duration:10];
     
     [self payOrdCallback:@"1"];

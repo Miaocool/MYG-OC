@@ -65,6 +65,8 @@
     //极光推送
     [self registerPushdic:launchOptions];
     
+    //获取当前版本号
+//    [self gainCurrentVersion];
     
     //修改启动页停留时间
     [NSThread sleepForTimeInterval:3];
@@ -262,6 +264,22 @@
 //    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 //        
 //    }];
+}
+#pragma mark - 获取当前版本号
+- (void)gainCurrentVersion{
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager POST:@"http://itunes.apple.com/lookup?id=1138149514" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        DebugLog(@"成功：---%@",responseObject);
+        
+        NSMutableArray *restultArray = responseObject[@"results"];
+        [restultArray enumerateObjectsUsingBlock:^(NSDictionary *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [UserDataSingleton userInformation].currentVersion = obj[@"version"];
+        }];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        DebugLog(@"失败： --%@",error);
+    }];
 }
 
 

@@ -44,6 +44,8 @@
 #import "SettlementViewController.h"
 #import "SettlementModel.h"
 
+#import "AFNetworking.h"
+
 @interface HomeViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,HeadlineScrollviewDelegate,GoodsCollectionViewCellDelegate,UIScrollViewDelegate, CloseTipViewDelegate>{
     NSInteger       _timedata; //时间计时
     
@@ -100,6 +102,8 @@
 /** 中奖提示索引 */
 @property (nonatomic, assign) int             index;
 
+@property (nonatomic,strong)NSString *xinVersion;
+
 
 @end
 
@@ -117,6 +121,9 @@ static NSString *collectionCellName2 = @"collectionCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+   
+    
 //    [self NewGoodsproduct];
     
     //            UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 95 ,24)];
@@ -137,15 +144,40 @@ static NSString *collectionCellName2 = @"collectionCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(kaijiangTishi) name:@"homeOpenJiang" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jiexiaoRes) name:@"jiexiaoResult" object:nil];
     
+      [self gainNewVersion];
+    
+}
+#pragma mark - 获取最新版本
+- (void)gainNewVersion{
+    
+    NSString *newVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    DebugLog(@"%@",newVersion);
+    DebugLog(@"%@",[UserDataSingleton userInformation].currentVersion);
+    
+    self.xinVersion = newVersion;
+    
+    
+}
+
+#pragma mark - 获取当前版本号
+- (void)gainCurrentVersion{
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager POST:@"http://itunes.apple.com/lookup?id=1138149514" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        DebugLog(@"成功：---%@",responseObject);
+        NSMutableArray *restultArray = responseObject[@"results"];
+        [restultArray enumerateObjectsUsingBlock:^(NSDictionary *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [UserDataSingleton userInformation].currentVersion = obj[@"version"];
+        }];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        DebugLog(@"失败： --%@",error);
+    }];
 }
 - (void)jiexiaoRes{
-    
     DebugLog(@"揭晓结果");
     
     [self GetLatesAnnounce];
-    
-    
-    
 }
 - (void)kaijiangTishi{
     
@@ -158,6 +190,8 @@ static NSString *collectionCellName2 = @"collectionCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self gainCurrentVersion];
     
     _LatesAnnArray=[NSMutableArray array];
     [self GetLatesAnnounce];
@@ -468,7 +502,14 @@ static NSString *collectionCellName2 = @"collectionCell";
                 GoodsModel *model = [[GoodsModel alloc]initWithDictionary:obj];
                 DebugLog(@"成功%@",model.title);
                 
-                [self.dataArray addObject:model];
+                if (![[UserDataSingleton userInformation].currentVersion isEqualToString:self.xinVersion]) {
+                    if (model.title ) {
+                        <#statements#>
+                    }
+                }else{
+                    
+                }
+
             }];
         }
         

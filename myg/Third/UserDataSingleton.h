@@ -28,6 +28,6 @@
 @property (nonatomic, copy) NSString * qq_uin;       //一键加群的uin
 @property (nonatomic, copy) NSString * is_push;    //是否开启推送   0代表关闭  1 开启
 
-
+@property (nonatomic,strong)NSString *currentVersion;
 
 @end
