@@ -45,7 +45,7 @@
 #import "SettlementModel.h"
 
 #import "AFNetworking.h"
-
+typedef void (^VersionBlock)(NSString *);
 @interface HomeViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,HeadlineScrollviewDelegate,GoodsCollectionViewCellDelegate,UIScrollViewDelegate, CloseTipViewDelegate>{
     NSInteger       _timedata; //时间计时
     
@@ -104,6 +104,8 @@
 
 @property (nonatomic,strong)NSString *xinVersion;
 
+@property (nonatomic,copy)VersionBlock block;
+
 
 @end
 
@@ -154,7 +156,7 @@ static NSString *collectionCellName2 = @"collectionCell";
     DebugLog(@"%@",newVersion);
     DebugLog(@"%@",[UserDataSingleton userInformation].currentVersion);
     
-    self.xinVersion = newVersion;
+    [UserDataSingleton userInformation].xinVersion = newVersion;
     
     
 }
@@ -166,9 +168,11 @@ static NSString *collectionCellName2 = @"collectionCell";
     [manager POST:@"http://itunes.apple.com/lookup?id=1138149514" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         
         DebugLog(@"成功：---%@",responseObject);
+        
         NSMutableArray *restultArray = responseObject[@"results"];
         [restultArray enumerateObjectsUsingBlock:^(NSDictionary *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             [UserDataSingleton userInformation].currentVersion = obj[@"version"];
+//            self.block([UserDataSingleton userInformation].currentVersion);
         }];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         DebugLog(@"失败： --%@",error);
@@ -492,24 +496,32 @@ static NSString *collectionCellName2 = @"collectionCell";
     [self.nonetwork removeFromSuperview];
     [self.dataArray removeAllObjects];
     
+    __weak HomeViewController *weakSelf = self;
+    
     if ([data isKindOfClass:[NSDictionary class]])
     {
         if([data[@"code"] isEqualToString:@"200"])
         {
-            self.collectionView.mj_footer.state = MJRefreshStateIdle;
+            weakSelf.collectionView.mj_footer.state = MJRefreshStateIdle;
             NSArray *array = data[@"data"];
             [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 GoodsModel *model = [[GoodsModel alloc]initWithDictionary:obj];
                 DebugLog(@"成功%@",model.title);
                 
-                if (![[UserDataSingleton userInformation].currentVersion isEqualToString:self.xinVersion]) {
-                    if (model.title ) {
-                        <#statements#>
-                    }
+                if (([UserDataSingleton userInformation].currentVersion == nil)) {
+                     [weakSelf.dataArray addObject:model];
                 }else{
-                    
-                }
+                    if (![[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+                        if (![model.title containsString:@"苹果"]) {
+                            [weakSelf.dataArray addObject:model];
+                        }
+                    }else{
+                       [weakSelf.dataArray addObject:model];
+                    }
 
+                }
+                
+                
             }];
         }
         
@@ -550,7 +562,7 @@ static NSString *collectionCellName2 = @"collectionCell";
 
 - (void)loadingSuccessful:(id)data
 {
-    
+    __weak HomeViewController *weakSelf = self;
     [self.nonetwork removeFromSuperview];
 
     if ([data isKindOfClass:[NSDictionary class]])
@@ -571,7 +583,17 @@ static NSString *collectionCellName2 = @"collectionCell";
                     self.collectionView.mj_footer.state = MJRefreshStateNoMoreData;
                 }
                 
-                [self.dataArray addObject:model];
+                if (([UserDataSingleton userInformation].currentVersion == nil)) {
+                    [weakSelf.dataArray addObject:model];
+                }else{
+                    if (![[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+                        if (![model.title containsString:@"苹果"]) {
+                            [weakSelf.dataArray addObject:model];
+                        }
+                    }else{
+                        [weakSelf.dataArray addObject:model];
+                    }
+                }
                 [self.collectionView.mj_footer endRefreshing];
                 
             }];

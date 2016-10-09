@@ -66,7 +66,7 @@
     [self registerPushdic:launchOptions];
     
     //获取当前版本号
-//    [self gainCurrentVersion];
+    [self gainCurrentVersion];
     
     //修改启动页停留时间
     [NSThread sleepForTimeInterval:3];
@@ -310,7 +310,6 @@
         [SVProgressHUD showErrorWithStatus:@"网络不给力"];
         
     }];
-
 }
 -(void)refreshSuccessful:(id)data{
     

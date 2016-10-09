@@ -175,6 +175,10 @@
 //    operation.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/plain",nil];
     operation.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/plain",@"text/vnd.wap.wml",@"text/html", nil];
     //申明请求的数据是json类型
+    
+    
+//    operation.responseSerializer = [AFHTTPResponseSerializer serializer];
+//    [AFHTTPRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"text/html"]];
     operation.requestSerializer=[AFHTTPRequestSerializer serializer];
     //////////////////////////////////////////////////////////////////
     

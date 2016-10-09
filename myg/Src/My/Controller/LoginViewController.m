@@ -474,7 +474,6 @@
             
         }];
     }
-    
 }
 #pragma mark - 第三方登录成功
 - (void)gotoLogin:(NSDictionary *)data

@@ -375,8 +375,19 @@ static NSString *announcedCellName = @"AnnouncedCell.h";
             NSArray *array = data[@"data"];
             [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 LatestAnnouncedModel *model = [[LatestAnnouncedModel alloc]initWithDictionary:obj];
-                
-                [self.dataArray addObject:model];
+                if (([UserDataSingleton userInformation].currentVersion == nil)) {
+                    [self.dataArray addObject:model];
+                }else{
+                    if (![[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+                        if (![model.title containsString:@"苹果"]) {
+                            [self.dataArray addObject:model];
+                        }
+                    }else{
+                        [self.dataArray addObject:model];
+                    }
+                }
+
+//                [self.dataArray addObject:model];
             }];
         }
         
@@ -441,8 +452,19 @@ static NSString *announcedCellName = @"AnnouncedCell.h";
             NSArray *array = data[@"data"];
             [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 LatestAnnouncedModel *model = [[LatestAnnouncedModel alloc]initWithDictionary:obj];
-                
-                [self.dataArray addObject:model];
+                if (([UserDataSingleton userInformation].currentVersion == nil)) {
+                    [self.dataArray addObject:model];
+                }else{
+                    if (![[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+                        if (![model.title containsString:@"苹果"]) {
+                            [self.dataArray addObject:model];
+                        }
+                    }else{
+                        [self.dataArray addObject:model];
+                    }
+                }
+
+//                [self.dataArray addObject:model];
             }];
             if([[NSString stringWithFormat:@"%lu",self.dataArray.count] isEqualToString:data[@"count"]])
             {

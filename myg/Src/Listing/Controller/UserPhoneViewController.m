@@ -266,7 +266,6 @@
             
                 DebugLog(@"修改失败");
                 [SVProgressHUD showErrorWithStatus:@"修改失败"];
-
             }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

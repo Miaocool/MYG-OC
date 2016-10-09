@@ -29,5 +29,5 @@
 @property (nonatomic, copy) NSString * is_push;    //是否开启推送   0代表关闭  1 开启
 
 @property (nonatomic,strong)NSString *currentVersion;
-
+@property (nonatomic,strong)NSString *xinVersion;
 @end

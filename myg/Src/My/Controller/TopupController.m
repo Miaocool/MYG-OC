@@ -199,8 +199,6 @@
     }];
     
 }
-
-
 #pragma mark - 顶部view  add By liangjun
 - (void)createheadview{
     
