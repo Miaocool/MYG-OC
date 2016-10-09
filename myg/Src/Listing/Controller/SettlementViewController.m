@@ -1059,7 +1059,7 @@
     [dict setValue:_key forKey:@"ordernumber"];
     [dict setValue:str forKey:@"id"];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [SVProgressHUD showErrorWithStatus:@"网络不给力!"];
     });
     [MDYAFHelp AFPostHost:APPHost bindPath:Callback postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
