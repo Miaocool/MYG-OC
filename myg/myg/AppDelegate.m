@@ -115,7 +115,7 @@
 //        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
 //    }
 //    //从服务器动态获取推送key
-//    [self httpGetPromptWithLaunchOptions:launchOptions];
+    [self httpGetPromptWithLaunchOptions:launchOptions];
 //
 //
     
@@ -187,7 +187,6 @@
     [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
         if(resCode == 0){
             DebugLog(@"registrationID获取成功：%@",registrationID);
-            
         }
         else{
             DebugLog(@"registrationID获取失败，code：%d",resCode);
@@ -221,49 +220,49 @@
 #pragma mark 从服务器动态获取推送key
 - (void)httpGetPromptWithLaunchOptions:(NSDictionary *)launchOptions
 {
-//    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-//    
-//    [dict setValue:@"2" forKey:@"type"];
-//    [dict setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"ver"];
-//    [MDYAFHelp AFPostHost:APPHost bindPath:Prompt postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
-//        
-//        DebugLog(@"res = %@",responseDic);
-//        if ([EncodeFormDic(responseDic, @"code") isEqualToString:@"200"]) {
-//            
-//            NSDictionary *dataDic = responseDic[@"data"];
-//            
-//            NSString *bPushKey = EncodeFormDic(dataDic, @"bd_pushkey");
-//            
-//            //#warning 上线 AppStore 时需要修改 pushMode 需要修改Apikey为自己的Apikey
-//            // 在 App 启动时注册百度云推送服务，需要提供 Apikey
-//            //  企业 60pDiM16ye7CwbZRWMbuNffZ    商店 j9jDdNOKYySHgl8MXCUf8kiI
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    
+    [dict setValue:@"2" forKey:@"type"];
+    [dict setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"ver"];
+    [MDYAFHelp AFPostHost:APPHost bindPath:Prompt postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
+        
+        DebugLog(@"res = %@",responseDic);
+        if ([EncodeFormDic(responseDic, @"code") isEqualToString:@"200"]) {
+            
+            NSDictionary *dataDic = responseDic[@"data"];
+            
+            NSString *bPushKey = EncodeFormDic(dataDic, @"bd_pushkey");
+            
+            //#warning 上线 AppStore 时需要修改 pushMode 需要修改Apikey为自己的Apikey
+            // 在 App 启动时注册百度云推送服务，需要提供 Apikey
+            //  企业 60pDiM16ye7CwbZRWMbuNffZ    商店 j9jDdNOKYySHgl8MXCUf8kiI
 //            [BPush registerChannel:launchOptions apiKey:bPushKey pushMode:BPushModeProduction withFirstAction:nil withSecondAction:nil withCategory:nil isDebug:YES];
-//            // App 是用户点击推送消息启动
-//            NSDictionary *userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-//            if (userInfo) {
-//                //  DebugLog(@"从消息启动:%@",userInfo);
+            // App 是用户点击推送消息启动
+            NSDictionary *userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+            if (userInfo) {
+                //  DebugLog(@"从消息启动:%@",userInfo);
 //                [BPush handleNotification:userInfo];
-//            }
-//            
-//            //角标清0
+            }
+            
+            //角标清0
 //            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-//            /*
-//             // 测试本地通知
-//             [self performSelector:@selector(testLocalNotifi) withObject:nil afterDelay:1.0];
-//             */
-//            
-//            //是否开启一键加群
-//            [UserDataSingleton userInformation].is_qq = EncodeFormDic(dataDic, @"is_qq");
-//            //一键加群的key
-//            [UserDataSingleton userInformation].qq_groupkey = EncodeFormDic(dataDic, @"qq_groupkey");
-//            //是否开启推送
-//            [UserDataSingleton userInformation].is_push = EncodeFormDic(dataDic, @"is_push");
-//
-//        }
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//    }];
+            /*
+             // 测试本地通知
+             [self performSelector:@selector(testLocalNotifi) withObject:nil afterDelay:1.0];
+             */
+            
+            //是否开启一键加群
+            [UserDataSingleton userInformation].is_qq = EncodeFormDic(dataDic, @"is_qq");
+            //一键加群的key
+            [UserDataSingleton userInformation].qq_groupkey = EncodeFormDic(dataDic, @"qq_groupkey");
+            //是否开启推送
+            [UserDataSingleton userInformation].is_push = EncodeFormDic(dataDic, @"is_push");
+
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 #pragma mark - 获取当前版本号
 - (void)gainCurrentVersion{

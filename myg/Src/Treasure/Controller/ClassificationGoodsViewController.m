@@ -173,7 +173,20 @@
 
             [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 GoodsModel *model = [[GoodsModel alloc]initWithDictionary:obj];
-                [self.dataArray addObject:model];
+//                [self.dataArray addObject:model];
+                if (([UserDataSingleton userInformation].currentVersion == nil)) {
+                    [self.dataArray addObject:model];
+                }else{
+                    if (![[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+                        if (![model.title containsString:@"苹果"]) {
+                            [self.dataArray addObject:model];
+                        }
+                    }else{
+                        [self.dataArray addObject:model];
+                    }
+                    
+                }
+
                 
             }];
 //            修改的－－－标题－－－－－－
@@ -262,7 +275,18 @@
 
             [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 GoodsModel *model = [[GoodsModel alloc]initWithDictionary:obj];
-                [self.dataArray addObject:model];
+//                [self.dataArray addObject:model];
+                if (([UserDataSingleton userInformation].currentVersion == nil)) {
+                    [self.dataArray addObject:model];
+                }else{
+                    if (![[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+                        if (![model.title containsString:@"苹果"]) {
+                            [self.dataArray addObject:model];
+                        }
+                    }else{
+                        [self.dataArray addObject:model];
+                    }
+                }
             }];
             if([[NSString stringWithFormat:@"%lu",self.dataArray.count] isEqualToString:data[@"count"]])
             {

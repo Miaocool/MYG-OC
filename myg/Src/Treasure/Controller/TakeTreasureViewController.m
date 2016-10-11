@@ -177,6 +177,19 @@
                 DebugLog(@"成功%@",model.title);
 
                 [self.dataArray addObject:model];
+//                if (([UserDataSingleton userInformation].currentVersion == nil)) {
+//                    [self.dataArray addObject:model];
+//                }else{
+//                    if (![[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+//                        if (![model.title containsString:@"苹果"]) {
+//                            [self.dataArray addObject:model];
+//                        }
+//                    }else{
+//                        [self.dataArray addObject:model];
+//                    }
+//                    
+//                }
+
             }];
         }
         

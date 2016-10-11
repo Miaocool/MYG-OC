@@ -124,7 +124,7 @@ static NSString *collectionCellName2 = @"collectionCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-   
+//   [self GetLatesAnnounce];
     
 //    [self NewGoodsproduct];
     
@@ -249,7 +249,20 @@ static NSString *collectionCellName2 = @"collectionCell";
             
             [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 LatestAnnouncedModel *model = [[LatestAnnouncedModel alloc]initWithDictionary:obj];
-                [self.LatesAnnArray addObject:model];
+//                [self.LatesAnnArray addObject:model];
+                if (([UserDataSingleton userInformation].currentVersion == nil)) {
+                    [self.LatesAnnArray addObject:model];
+                }else{
+                    if (![[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+                        if (![model.title containsString:@"苹果"]) {
+                            [self.LatesAnnArray addObject:model];
+                        }
+                    }else{
+                        [self.LatesAnnArray addObject:model];
+                    }
+                    
+                }
+
             }];
 
         }
@@ -487,7 +500,6 @@ static NSString *collectionCellName2 = @"collectionCell";
    
     }];
 }
-
 
 - (void)refreshSuccessful:(id)data
 {
