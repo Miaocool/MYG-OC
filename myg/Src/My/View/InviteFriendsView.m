@@ -155,7 +155,7 @@
                     friend.uid = obj[@"uid"];
                     friend.userName = obj[@"username"];
                     if ([self.type isEqualToString:@"1"]) {
-                        [self.friendArray1 addObject:friend];
+                        [self.rankingArray addObject:friend];
                     }else if ([self.type isEqualToString:@"2"]){
                         [self.friendArray2 addObject:friend];
                     }else if ([self.type isEqualToString:@"3"]){

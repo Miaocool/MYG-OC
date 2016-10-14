@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18680A611DB07EF2009E6854 /* RedPageAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18680A601DB07EF2009E6854 /* RedPageAlertView.m */; };
+		18680A631DB08C8F009E6854 /* RedPageAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18680A621DB08C8F009E6854 /* RedPageAlertView.xib */; };
 		18829AFD1D83A71600E5B4BD /* PromptlyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18829AFC1D83A71600E5B4BD /* PromptlyViewController.m */; };
 		1883AC651D6EBAB80001DDC1 /* LogisticInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1883AC641D6EBAB80001DDC1 /* LogisticInfoVC.m */; };
 		18B7BBD11DA8EAD000C8B98E /* MygappInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B7BBD01DA8EAD000C8B98E /* MygappInfoModel.m */; };
@@ -412,6 +414,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		18680A5F1DB07EF2009E6854 /* RedPageAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedPageAlertView.h; sourceTree = "<group>"; };
+		18680A601DB07EF2009E6854 /* RedPageAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedPageAlertView.m; sourceTree = "<group>"; };
+		18680A621DB08C8F009E6854 /* RedPageAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RedPageAlertView.xib; sourceTree = "<group>"; };
 		18829AFB1D83A71600E5B4BD /* PromptlyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PromptlyViewController.h; sourceTree = "<group>"; };
 		18829AFC1D83A71600E5B4BD /* PromptlyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PromptlyViewController.m; sourceTree = "<group>"; };
 		1883AC631D6EBAB80001DDC1 /* LogisticInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogisticInfoVC.h; sourceTree = "<group>"; };
@@ -2067,6 +2072,9 @@
 				D857190D1CBD098B00092F3D /* UITabBar+badge.m */,
 				332398041CBF468900A896D1 /* UITabBar+badge.h */,
 				332398051CBF468900A896D1 /* UITabBar+badge.m */,
+				18680A5F1DB07EF2009E6854 /* RedPageAlertView.h */,
+				18680A601DB07EF2009E6854 /* RedPageAlertView.m */,
+				18680A621DB08C8F009E6854 /* RedPageAlertView.xib */,
 			);
 			path = Main;
 			sourceTree = SOURCE_ROOT;
@@ -3096,6 +3104,7 @@
 				33CDB8EF1CEF0A3C00129ABC /* Resource.bundle in Resources */,
 				D84FDC5B1C12CD8700E26DE2 /* egopv_fullscreen_button@2x.png in Resources */,
 				19595AF61BF1E2DC004B983F /* image1.png in Resources */,
+				18680A631DB08C8F009E6854 /* RedPageAlertView.xib in Resources */,
 				D84FDC611C12CD8700E26DE2 /* egopv_right.png in Resources */,
 				19BF123A1BF0345000018261 /* LaunchScreen.xib in Resources */,
 				D864156C1C06D8F7008D3A88 /* states01.png in Resources */,
@@ -3294,6 +3303,7 @@
 				2295BDBD1BFEE4DC0044286F /* DoingViewCell.m in Sources */,
 				D86BA71C1C1FAF94001DD82E /* HongbaoModel.m in Sources */,
 				195955371BF03576004B983F /* MDCustomNaviView.m in Sources */,
+				18680A611DB07EF2009E6854 /* RedPageAlertView.m in Sources */,
 				226752651C0469750079A01E /* MJRefreshBackGifFooter.m in Sources */,
 				D86415621C069E4A008D3A88 /* ExchangeRecordViewController.m in Sources */,
 				D86BA71F1C1FAFBD001DD82E /* RechargeDto.m in Sources */,

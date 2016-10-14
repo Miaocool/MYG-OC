@@ -12,5 +12,5 @@
 + (UIColor *)colorWithHex:(NSString *)hexColor;
 
 + (UIColor *)viewBackColor;
-
++ (UIColor *) colorWithHexString: (NSString *)color;
 @end

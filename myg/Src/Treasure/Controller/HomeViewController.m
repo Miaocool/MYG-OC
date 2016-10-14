@@ -43,7 +43,7 @@
 #import "FindTreasureController.h"
 #import "SettlementViewController.h"
 #import "SettlementModel.h"
-
+#import "RedPageAlertView.h"
 #import "AFNetworking.h"
 typedef void (^VersionBlock)(NSString *);
 @interface HomeViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,HeadlineScrollviewDelegate,GoodsCollectionViewCellDelegate,UIScrollViewDelegate, CloseTipViewDelegate>{
@@ -107,6 +107,7 @@ typedef void (^VersionBlock)(NSString *);
 @property (nonatomic,copy)VersionBlock block;
 
 
+
 @end
 
 static NSString *collectionCellName = @"collectionCell";
@@ -148,6 +149,21 @@ static NSString *collectionCellName2 = @"collectionCell";
     
       [self gainNewVersion];
     
+    if ([UserDataSingleton userInformation].isLogin) {
+        
+    }else{
+        
+    }
+    
+    
+     [[RedPageAlertView shareInstance] showWithState:YES imageName:@"null_redpage" checkTitle:@"查看红包"];
+    
+    [RedPageAlertView shareInstance].checkBlock = ^(NSString *title){
+      
+        DebugLog(@"%@",title);
+        
+        
+    };
 }
 #pragma mark - 获取最新版本
 - (void)gainNewVersion{
@@ -259,12 +275,12 @@ static NSString *collectionCellName2 = @"collectionCell";
                         }
                     }else{
                         [self.LatesAnnArray addObject:model];
+                        
                     }
-                    
                 }
 
             }];
-
+             [self.collectionView2 reloadData];
         }
         if (_LatesAnnArray.count>0) {
             ishave=1;
@@ -536,7 +552,6 @@ static NSString *collectionCellName2 = @"collectionCell";
                 
             }];
         }
-        
     }
     [self initcollectionView];
     
@@ -644,7 +659,7 @@ static NSString *collectionCellName2 = @"collectionCell";
                 }];
                 
                 if (ishave==1 ||ishave==2) {
-                    [self createUI];
+                    [self createUI];   
  
                 }
                 

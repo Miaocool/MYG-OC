@@ -46,7 +46,7 @@
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
 #endif
-
+#import "RedPageAlertView.h"
 @interface AppDelegate ()<WXApiDelegate,JPUSHRegisterDelegate>
 {
     NSString *Newurl;
@@ -62,6 +62,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 
 {
+    
+    
+//    [RedPageAlertView show];
+    
+    
+    
+    
     //极光推送
     [self registerPushdic:launchOptions];
     
@@ -406,7 +413,14 @@
    
     self.window.rootViewController = tabBar;
     
-
+    
+//    RedPageAlertView *redview = [[RedPageAlertView alloc]initWithFrame:[UIScreen mainScreen].bounds];
+//    
+//    //    [redview show];
+//    redview.backgroundColor = [UIColor redColor];
+//    [[UIApplication sharedApplication].keyWindow addSubview:redview];
+    
+    
 
 }
 

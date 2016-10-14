@@ -217,6 +217,7 @@
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     NSString *str = [array componentsJoinedByString:@","];
     [dict setValue:str forKey:@"shopid"];
+    [dict setValue:[UserDataSingleton userInformation].uid forKey:@"yhid"];
     
     [MDYAFHelp AFPostHost:APPHost bindPath:ShoppingList postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
         DebugLog(@"成功：%@",responseDic);
