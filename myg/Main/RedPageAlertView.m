@@ -14,6 +14,9 @@
 @property (nonatomic,strong)UIButton *gainRedPageBtn;
 @property (nonatomic,strong)UIButton *checkRedPageBtn;
 @property (nonatomic,strong)UILabel *resultLabel;
+@property (nonatomic,strong)UILabel *identLabel;
+@property (nonatomic,strong)UILabel *sumMoney;
+@property (nonatomic,strong)UILabel *unit;
 @end
 @implementation RedPageAlertView
 
