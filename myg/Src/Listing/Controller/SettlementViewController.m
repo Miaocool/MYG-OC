@@ -1079,7 +1079,6 @@
             userData.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:userData animated:YES];
             
-            
             [[UserDataSingleton userInformation].shoppingArray removeAllObjects];
             
             //通知 改变徽标个数

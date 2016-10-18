@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		18680A611DB07EF2009E6854 /* RedPageAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18680A601DB07EF2009E6854 /* RedPageAlertView.m */; };
 		18680A631DB08C8F009E6854 /* RedPageAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18680A621DB08C8F009E6854 /* RedPageAlertView.xib */; };
 		18829AFD1D83A71600E5B4BD /* PromptlyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18829AFC1D83A71600E5B4BD /* PromptlyViewController.m */; };
 		1883AC651D6EBAB80001DDC1 /* LogisticInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1883AC641D6EBAB80001DDC1 /* LogisticInfoVC.m */; };
+		18A41F261DB5AC69000F4E27 /* RedPageAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A41F231DB5AC69000F4E27 /* RedPageAlertView.m */; };
+		18A41F271DB5AC69000F4E27 /* RegisterRedPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A41F251DB5AC69000F4E27 /* RegisterRedPageView.m */; };
 		18B7BBD11DA8EAD000C8B98E /* MygappInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B7BBD01DA8EAD000C8B98E /* MygappInfoModel.m */; };
 		18FAEC601D9E0C89002C3D2A /* jpush-ios-2.1.9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18FAEC5E1D9E0C89002C3D2A /* jpush-ios-2.1.9.a */; };
 		18FAEC621D9E0D71002C3D2A /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18FAEC611D9E0D71002C3D2A /* CFNetwork.framework */; };
@@ -414,13 +415,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		18680A5F1DB07EF2009E6854 /* RedPageAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedPageAlertView.h; sourceTree = "<group>"; };
-		18680A601DB07EF2009E6854 /* RedPageAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedPageAlertView.m; sourceTree = "<group>"; };
 		18680A621DB08C8F009E6854 /* RedPageAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RedPageAlertView.xib; sourceTree = "<group>"; };
 		18829AFB1D83A71600E5B4BD /* PromptlyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PromptlyViewController.h; sourceTree = "<group>"; };
 		18829AFC1D83A71600E5B4BD /* PromptlyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PromptlyViewController.m; sourceTree = "<group>"; };
 		1883AC631D6EBAB80001DDC1 /* LogisticInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogisticInfoVC.h; sourceTree = "<group>"; };
 		1883AC641D6EBAB80001DDC1 /* LogisticInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogisticInfoVC.m; sourceTree = "<group>"; };
+		18A41F221DB5AC69000F4E27 /* RedPageAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedPageAlertView.h; sourceTree = "<group>"; };
+		18A41F231DB5AC69000F4E27 /* RedPageAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedPageAlertView.m; sourceTree = "<group>"; };
+		18A41F241DB5AC69000F4E27 /* RegisterRedPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterRedPageView.h; sourceTree = "<group>"; };
+		18A41F251DB5AC69000F4E27 /* RegisterRedPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterRedPageView.m; sourceTree = "<group>"; };
 		18B7BBCF1DA8EAD000C8B98E /* MygappInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MygappInfoModel.h; sourceTree = "<group>"; };
 		18B7BBD01DA8EAD000C8B98E /* MygappInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MygappInfoModel.m; sourceTree = "<group>"; };
 		18FAEC5E1D9E0C89002C3D2A /* jpush-ios-2.1.9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.9.a"; sourceTree = "<group>"; };
@@ -2072,8 +2075,10 @@
 				D857190D1CBD098B00092F3D /* UITabBar+badge.m */,
 				332398041CBF468900A896D1 /* UITabBar+badge.h */,
 				332398051CBF468900A896D1 /* UITabBar+badge.m */,
-				18680A5F1DB07EF2009E6854 /* RedPageAlertView.h */,
-				18680A601DB07EF2009E6854 /* RedPageAlertView.m */,
+				18A41F221DB5AC69000F4E27 /* RedPageAlertView.h */,
+				18A41F231DB5AC69000F4E27 /* RedPageAlertView.m */,
+				18A41F241DB5AC69000F4E27 /* RegisterRedPageView.h */,
+				18A41F251DB5AC69000F4E27 /* RegisterRedPageView.m */,
 				18680A621DB08C8F009E6854 /* RedPageAlertView.xib */,
 			);
 			path = Main;
@@ -3303,7 +3308,7 @@
 				2295BDBD1BFEE4DC0044286F /* DoingViewCell.m in Sources */,
 				D86BA71C1C1FAF94001DD82E /* HongbaoModel.m in Sources */,
 				195955371BF03576004B983F /* MDCustomNaviView.m in Sources */,
-				18680A611DB07EF2009E6854 /* RedPageAlertView.m in Sources */,
+				18A41F261DB5AC69000F4E27 /* RedPageAlertView.m in Sources */,
 				226752651C0469750079A01E /* MJRefreshBackGifFooter.m in Sources */,
 				D86415621C069E4A008D3A88 /* ExchangeRecordViewController.m in Sources */,
 				D86BA71F1C1FAFBD001DD82E /* RechargeDto.m in Sources */,
@@ -3444,6 +3449,7 @@
 				195955391BF03576004B983F /* MDRefreshFootView.m in Sources */,
 				D88A10C81CD09049007F1C4B /* AddPayController.m in Sources */,
 				D883081B1C1291AA00705EC0 /* RSADataSigner.m in Sources */,
+				18A41F271DB5AC69000F4E27 /* RegisterRedPageView.m in Sources */,
 				D86415651C06D55F008D3A88 /* AlterAddressViewController.m in Sources */,
 				195955551BF03576004B983F /* UIImageView+WebCache.m in Sources */,
 				D84FDC511C12CD8700E26DE2 /* EGOImageLoadConnection.m in Sources */,

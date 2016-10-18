@@ -9,7 +9,10 @@
 #import "LastStepViewController.h"
 
 #import "RegisteredCell.h"
-
+#import "RegisterRedPageView.h"
+#import "RedPageAlertView.h"
+#import "RegisteredViewController.h"
+#import "MyRedViewController.h"
 @interface LastStepViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIScrollViewDelegate>
 {
     NSTimer            *_timer;
@@ -47,6 +50,37 @@
     
     [self initData];
     [self initTableView];
+    
+    [RedPageAlertView shareInstance].closeBlock = ^(){
+        if ([UserDataSingleton userInformation].isLogin) {
+            [self closeRequest];
+        }
+    };
+    [RedPageAlertView shareInstance].checkBlock = ^(NSString *title){
+        
+        DebugLog(@"%@",title);
+        
+        if ([title isEqualToString:@"领取红包"]) {
+            // push
+            DebugLog(@"push领取红包");
+            
+            RegisteredViewController *registerVC = [RegisteredViewController new];
+            [self.navigationController pushViewController:registerVC animated:YES];
+            [[RedPageAlertView shareInstance] dismiss];
+        }else{
+            [self getRedPage];
+        }
+    };
+}
+/** 关闭请求 */
+- (void)closeRequest{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *dict = @{@"yhid":@"",@"code":@""};
+    [manager GET:@"http://www.miyungou.com/?/app/app/updateBounsState" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
 }
 
 - (void)initData
@@ -57,6 +91,9 @@
 
 - (void)initTableView
 {
+    RegisterRedPageView *redpageView = [[RegisterRedPageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 38)];
+    [self.view addSubview:redpageView];
+    
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MSW,MSH)];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -445,19 +482,25 @@
             [UserDataSingleton userInformation].uid = dict[@"uid"];
             //                  self.userName.text=dict[@"mobile"];
             DebugLog(@"!!!!!!!!!!!!!!!!%@,%@",dict[@"uid"],dict[@"code"]);
-            for (UIViewController *temp in self.navigationController.viewControllers)
-            {
-                if ([temp isKindOfClass:[LoginViewController class]])
+            
+            
+            if ([self.navigationController.viewControllers[0] isKindOfClass:[HomeViewController class]]) {
+//                [self getRedPage];
+                self.tabBarController.selectedIndex = 0;
+                [self.navigationController popToRootViewControllerAnimated:YES];
+                [[RedPageAlertView shareInstance] showWithState:NO checkTitle:@"查看红包" imageName:@"redpage_look"];
+            }else{
+                for (UIViewController *temp in self.navigationController.viewControllers)
                 {
-                    // self.tabBarController.selectedIndex = 4;
-                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    if ([temp isKindOfClass:[LoginViewController class]])
+                    {
+//                         self.tabBarController.selectedIndex = 0;
+//                        [[RedPageAlertView shareInstance] showWithState:NO checkTitle:@"查看红包" imageName:@"redpage_look"];
+                        [self.navigationController popToRootViewControllerAnimated:YES];
+                    }
                 }
             }
-            
         }
-        
-        
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
          DebugLog(@"==============%@",error);
@@ -466,6 +509,19 @@
     
     
     
+}
+/** 领取红包请求*/
+- (void)getRedPage{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *dict = @{@"yhid":[UserDataSingleton userInformation].uid,@"code":[UserDataSingleton userInformation].code};
+    [manager GET:@"http://www.miyungou.com/?/app/app/getNewBonus" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        //获取成功，查看红包
+        MyRedViewController *myredVC = [MyRedViewController new];
+        [self.navigationController pushViewController:myredVC animated:YES];
+        [[RedPageAlertView shareInstance] dismiss];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
 }
 -(void)wancheng{
     RegisteredCell *cell1 = (RegisteredCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]];

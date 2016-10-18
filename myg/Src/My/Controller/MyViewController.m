@@ -39,6 +39,8 @@
 #import "PromptlyViewController.h"
 
 #import "UserPhoneViewController.h"
+#import "RegisteredViewController.h"
+#import "RedPageAlertView.h"
 
 @interface MyViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate, CloseTipViewDelegate>
 {
@@ -99,6 +101,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    [RedPageAlertView shareInstance].closeBlock = ^(){
+        [self closeRequest];
+    };
+    [RedPageAlertView shareInstance].checkBlock = ^(NSString *title){
+        
+        DebugLog(@"%@",title);
+        
+        if ([title isEqualToString:@"领取红包"]) {
+            // push
+            DebugLog(@"push领取红包");
+            
+            RegisteredViewController *registerVC = [RegisteredViewController new];
+            [self.navigationController pushViewController:registerVC animated:YES];
+            [[RedPageAlertView shareInstance] dismiss];
+        }else{
+            [self getRedPage];
+        }
+    };
+
    
     titlesArray = @[@"我的积分",@"我的红包",@"收货信息管理",@"",@"夺宝记录",@"中奖记录",@"我的晒单",@"充值记录",@"我的推广",@"一键加群"];
     imgArray = @[@"pic_me_points",@"icon_my_12",@"pic_me_address",@"",@"pic_me_buy",@"pic_me_win",@"pic_me_share",@"icon_my_10",@"icon_my_11",@"icon09_my"];
@@ -189,7 +212,12 @@
         }
         if ([responseDic[@"code"] isEqualToString:@"200"])
         {
+            
+            
+            
             [UserDataSingleton userInformation].isLogin = YES;
+            
+            [self queryYesOrNoShow];
             _model=[[UserDataModel alloc]init];
             NSDictionary*data=responseDic[@"data"];
             _model.username=data[@"username"];
@@ -260,6 +288,50 @@
     }];
     
 }
+/** 查询是否显示 */
+- (void)queryYesOrNoShow{
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *dict = @{@"yhid":[UserDataSingleton userInformation].uid,@"code":[UserDataSingleton userInformation].code};
+    [manager GET:@"http://www.miyungou.com/?/app/app/newuser" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        NSDictionary *resultData = responseObject[@"data"];
+//        [[RedPageAlertView shareInstance] showWithState:NO checkTitle:@"查看红包" imageName:@"redpage_look"];
+        
+        if (!(resultData == nil)) {
+            id status = resultData[@"showStatus"];
+            if (![status isEqualToString:@"false"]) {
+                [[RedPageAlertView shareInstance] showWithState:NO checkTitle:@"查看红包" imageName:@"redpage_look"];
+            }
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
+/** 关闭请求 */
+- (void)closeRequest{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *dict = @{@"yhid":@"",@"code":@""};
+    [manager GET:@"http://www.miyungou.com/?/app/app/updateBounsState" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
+/** 领取红包请求*/
+- (void)getRedPage{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *dict = @{@"yhid":[UserDataSingleton userInformation].uid,@"code":[UserDataSingleton userInformation].code};
+    [manager GET:@"http://www.miyungou.com/?/app/app/getNewBonus" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        //获取成功，查看红包
+        MyRedViewController *myredVC = [MyRedViewController new];
+        [self.navigationController pushViewController:myredVC animated:YES];
+        [[RedPageAlertView shareInstance] dismiss];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
+
 /**
  *  立即验证
  */

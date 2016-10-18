@@ -9,7 +9,7 @@
 #import "RegisteredViewController.h"
 
 #import "LastStepViewController.h"
-
+#import "RegisterRedPageView.h"
 @interface RegisteredViewController ()<UITextFieldDelegate>
 @property (nonatomic, strong) UITextField *textField;
 @end
@@ -26,12 +26,16 @@
 
 - (void)createUI
 {
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, MSW, 40)];
+    
+    RegisterRedPageView *redpageView = [[RegisterRedPageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 38)];
+    [self.view addSubview:redpageView];
+    
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 48, MSW, 40)];
     label.font = [UIFont systemFontOfSize:BigFont];
     label.text = @"请输入手机号码进行注册";
     [self.view addSubview:label];
     
-    UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(0,55, MSW, 50)];
+    UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(0,93, MSW, 50)];
     view1.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:view1];
     //用户名

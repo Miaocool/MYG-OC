@@ -16,6 +16,8 @@
 #import "WXApi.h"
 #import "WeiboSDK.h"
 #import "JPUSHService.h"
+#import "RedPageAlertView.h"
+#import "MyRedViewController.h"
 @interface LoginViewController ()<UITextFieldDelegate>{
      NSMutableDictionary                 *_infoDict;
     
@@ -47,9 +49,9 @@
     [super viewDidLoad];
     self.title = @"用户登录";
     
+       
+    
 }
-
-
 #pragma mark - 创建UI
 - (void)createUI
 {
@@ -446,10 +448,8 @@
                     if([responseDic[@"code"] isEqualToString:@"200"])
                     {
                         NSDictionary *data = responseDic[@"data"];
-                        
                         [self gotoLogin:data];
                     }
-                    
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"当前网络不给力" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                     [alert show];
@@ -491,9 +491,18 @@
     [UserDataSingleton userInformation].img=EncodeFormDic(data,@"img");
     [UserDataSingleton userInformation].isLogin=YES;
     
+//    [self queryYesOrNoShow];
+    
+//     [[RedPageAlertView shareInstance] showWithState:NO checkTitle:@"查看红包" imageName:@"redpage_look"];
+//    self.tabBarController.selectedIndex = 0;
     [self.navigationController popViewControllerAnimated:YES];
+//
 }
-
+- (void)dealloc{
+    
+    DebugLog(@"loginvc 已经销毁");
+    
+}
 #pragma mark - 注册
 - (void)registered
 {
@@ -553,6 +562,8 @@
                   [UserDataSingleton userInformation].uid = dict[@"uid"];
                    [JPUSHService setAlias:[NSString stringWithFormat:@"%@",[UserDataSingleton userInformation].uid] callbackSelector:nil object:self];
                   DebugLog(@"!!!!!!!!!!!!!!!!%@,%@",dict[@"uid"],dict[@"code"]);
+//                   [self queryYesOrNoShow];
+//                  self.tabBarController.selectedIndex = 0;
                   [self.navigationController popViewControllerAnimated:YES];
               }
           
@@ -563,7 +574,6 @@
           }];
     }
 }
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

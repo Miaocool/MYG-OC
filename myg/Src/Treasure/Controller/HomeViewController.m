@@ -45,6 +45,8 @@
 #import "SettlementModel.h"
 #import "RedPageAlertView.h"
 #import "AFNetworking.h"
+#import "RegisteredViewController.h"
+#import "MyRedViewController.h"
 typedef void (^VersionBlock)(NSString *);
 @interface HomeViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,HeadlineScrollviewDelegate,GoodsCollectionViewCellDelegate,UIScrollViewDelegate, CloseTipViewDelegate>{
     NSInteger       _timedata; //时间计时
@@ -149,21 +151,87 @@ static NSString *collectionCellName2 = @"collectionCell";
     
       [self gainNewVersion];
     
-    if ([UserDataSingleton userInformation].isLogin) {
-        
-    }else{
-        
-    }
+ 
+    [self judgeLoginStatus];
     
-    
-     [[RedPageAlertView shareInstance] showWithState:YES imageName:@"null_redpage" checkTitle:@"查看红包"];
-    
+    [RedPageAlertView shareInstance].closeBlock = ^(){
+        if ([UserDataSingleton userInformation].isLogin) {
+            [self closeRequest];
+        }
+    };
     [RedPageAlertView shareInstance].checkBlock = ^(NSString *title){
-      
+        
         DebugLog(@"%@",title);
         
-        
+        if ([title isEqualToString:@"领取红包"]) {
+                // push
+                DebugLog(@"push领取红包");
+                
+                RegisteredViewController *registerVC = [RegisteredViewController new];
+                [self.navigationController pushViewController:registerVC animated:YES];
+                [[RedPageAlertView shareInstance] dismiss];
+        }else{
+            [self getRedPage];
+        }
     };
+}
+- (void)judgeLoginStatus{
+    
+    if (![UserDataSingleton userInformation].isLogin) {
+            [self loginAgo];
+    }else{
+        [self queryYesOrNoShow];
+    }
+}
+/** 登陆前 */
+- (void)loginAgo{
+    [[RedPageAlertView shareInstance] showWithState:YES checkTitle:@"领取红包" imageName:@"redpage_big"];
+}
+/** 登陆后 */
+- (void)loginLate{
+    [[RedPageAlertView shareInstance] showWithState:YES checkTitle:@"查看红包" imageName:@"redpage_look"];
+}
+/** 查询是否显示 */
+- (void)queryYesOrNoShow{
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *dict = @{@"yhid":[UserDataSingleton userInformation].uid,@"code":[UserDataSingleton userInformation].code};
+    [manager GET:@"http://www.miyungou.com/?/app/app/newuser" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        NSDictionary *resultData = responseObject[@"data"];
+
+        if (!([resultData isEqual:@""])) {
+            id status = resultData[@"showStatus"];
+            if (![status isEqualToString:@"false"]) {
+                [self loginLate];
+            }
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
+/** 关闭请求 */
+- (void)closeRequest{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *dict = @{@"yhid":@"",@"code":@""};
+    [manager GET:@"http://www.miyungou.com/?/app/app/updateBounsState" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
+/** 领取红包请求*/
+- (void)getRedPage{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *dict = @{@"yhid":[UserDataSingleton userInformation].uid,@"code":[UserDataSingleton userInformation].code};
+    [manager GET:@"http://www.miyungou.com/?/app/app/getNewBonus" parameters:dict success:^(NSURLSessionDataTask *task, id responseObject) {
+        //获取成功，查看红包
+        MyRedViewController *myredVC = [MyRedViewController new];
+        [self.navigationController pushViewController:myredVC animated:YES];
+        [[RedPageAlertView shareInstance] dismiss];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
 }
 #pragma mark - 获取最新版本
 - (void)gainNewVersion{
@@ -173,8 +241,6 @@ static NSString *collectionCellName2 = @"collectionCell";
     DebugLog(@"%@",[UserDataSingleton userInformation].currentVersion);
     
     [UserDataSingleton userInformation].xinVersion = newVersion;
-    
-    
 }
 
 #pragma mark - 获取当前版本号
@@ -229,6 +295,9 @@ static NSString *collectionCellName2 = @"collectionCell";
     //    [self startTimer];
     
     [self httpGetAwardTip];
+    
+    
+    
 
 }
 
