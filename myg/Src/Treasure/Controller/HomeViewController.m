@@ -152,7 +152,7 @@ static NSString *collectionCellName2 = @"collectionCell";
       [self gainNewVersion];
     
  
-    [self judgeLoginStatus];
+    
     
     [RedPageAlertView shareInstance].closeBlock = ^(){
         if ([UserDataSingleton userInformation].isLogin) {
@@ -174,13 +174,29 @@ static NSString *collectionCellName2 = @"collectionCell";
             [self getRedPage];
         }
     };
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVersion) name:@"notificatVersion" object:nil];
+    
+}
+- (void)updateVersion{
+    
+    [self judgeLoginStatus];
+    
+    DebugLog(@"版本号：%@",[UserDataSingleton userInformation].currentVersion);
+    
 }
 - (void)judgeLoginStatus{
     
-    if (![UserDataSingleton userInformation].isLogin) {
-            [self loginAgo];
+    if ([UserDataSingleton userInformation].currentVersion == nil) {
+        [SVProgressHUD showErrorWithStatus:@"网络连接失败"];
     }else{
-        [self queryYesOrNoShow];
+        if ([[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+            if (![UserDataSingleton userInformation].isLogin) {
+                [self loginAgo];
+            }else{
+                [self queryYesOrNoShow];
+            }
+        }
     }
 }
 /** 登陆前 */
@@ -254,10 +270,14 @@ static NSString *collectionCellName2 = @"collectionCell";
         NSMutableArray *restultArray = responseObject[@"results"];
         [restultArray enumerateObjectsUsingBlock:^(NSDictionary *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             [UserDataSingleton userInformation].currentVersion = obj[@"version"];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"notificatVersion" object:nil];
+            
 //            self.block([UserDataSingleton userInformation].currentVersion);
         }];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         DebugLog(@"失败： --%@",error);
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"notificatVersion" object:nil];
     }];
 }
 - (void)jiexiaoRes{
