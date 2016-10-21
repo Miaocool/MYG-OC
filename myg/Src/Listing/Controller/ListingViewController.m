@@ -814,94 +814,112 @@ ListingModel*model=[_dataArray objectAtIndex:index];
 #pragma mark 结算
 - (void)settlement
 {
-    __block NSString *settlementString;
-    NSMutableArray *settlementArray = [NSMutableArray array]; //结算array
-    
-    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
-    if ([UserDataSingleton userInformation].isLogin == YES)
-    {
-        //解析数据对象
-        [[UserDataSingleton userInformation].shoppingArray enumerateObjectsUsingBlock:^(ShoppingModel *obj, NSUInteger idx, BOOL *stop) {
-            settlementString =  [NSString stringWithFormat:@"{\"shopid\":%@,\"number\":%ld}",obj.goodsId,(long)obj.num];
-            [settlementArray addObject:settlementString];
-            DebugLog(@"str:---------%@",settlementString);
-        }];
-        NSString *string = [NSString stringWithFormat:@"[%@]",[settlementArray componentsJoinedByString:@","]];
-        DebugLog(@"!!!!!!!!!!!解析%@",string);
-        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-        [dict setValue:[UserDataSingleton userInformation].uid forKey:@"yhid"];
-        [dict setValue:[UserDataSingleton userInformation].code forKey:@"code"];
-        [dict setValue:string forKey:@"cart"];
-        [dict setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"ver"];
-        [MDYAFHelp AFPostHost:APPHost bindPath:xinjiesuan postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
-            DebugLog(@"====%@",responseDic);
-            if ([responseDic[@"code"] isEqualToString:@"302"])
-            {
-                [SVProgressHUD showErrorWithStatus:@"请登录"];
-                
-                LoginViewController *loginVC = [[LoginViewController alloc]init];
-                loginVC.hidesBottomBarWhenPushed=YES;
-                [self.navigationController pushViewController:loginVC animated:YES];
-            }
-            if ([responseDic[@"code"]isEqualToString:@"400"])
-            {
-               [SVProgressHUD showErrorWithStatus:responseDic[@"msg"]];
-            }
-            if ([responseDic[@"code"] isEqualToString:@"200"])
-            {
-                [SVProgressHUD dismiss];
-                
-                [self.classArray removeAllObjects];
-                [self.zhifuNameArray removeAllObjects];
-                [self.zhifuTishiArray removeAllObjects];
-                [self.zhifuColorArray removeAllObjects];
-                [self.zhifuImgArray removeAllObjects];
-                
-                NSDictionary *dict = responseDic[@"data"];
-                SettlementModel *model = [[SettlementModel alloc]initWithDictionary:dict];
-//                DebugLog(@"===================%@",model.jiage);
-                for (int i=0; i<model.pay_type.count; i++) {
-                    NSDictionary*dic1=[model.pay_type objectAtIndex:i];
-                    [self.classArray addObject:dic1[@"pay_class"]];
-                    [self.zhifuNameArray addObject:dic1[@"pay_name"]];
-                    [self.zhifuTishiArray addObject:dic1[@"tishi"]];
-                    [self.zhifuColorArray addObject:dic1[@"color"]];
-                    [self.zhifuImgArray addObject:dic1[@"img"]];
+    if ([[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+        __block NSString *settlementString;
+        NSMutableArray *settlementArray = [NSMutableArray array]; //结算array
+        
+        [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+        if ([UserDataSingleton userInformation].isLogin == YES)
+        {
+            //解析数据对象
+            [[UserDataSingleton userInformation].shoppingArray enumerateObjectsUsingBlock:^(ShoppingModel *obj, NSUInteger idx, BOOL *stop) {
+                settlementString =  [NSString stringWithFormat:@"{\"shopid\":%@,\"number\":%ld}",obj.goodsId,(long)obj.num];
+                [settlementArray addObject:settlementString];
+                DebugLog(@"str:---------%@",settlementString);
+            }];
+            NSString *string = [NSString stringWithFormat:@"[%@]",[settlementArray componentsJoinedByString:@","]];
+            DebugLog(@"!!!!!!!!!!!解析%@",string);
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            [dict setValue:[UserDataSingleton userInformation].uid forKey:@"yhid"];
+            [dict setValue:[UserDataSingleton userInformation].code forKey:@"code"];
+            [dict setValue:string forKey:@"cart"];
+            [dict setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"ver"];
+            [MDYAFHelp AFPostHost:APPHost bindPath:xinjiesuan postParam:dict getParam:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseDic) {
+                DebugLog(@"====%@",responseDic);
+                if ([responseDic[@"code"] isEqualToString:@"302"])
+                {
+                    [SVProgressHUD showErrorWithStatus:@"请登录"];
                     
-                    DebugLog(@"---->%@",self.classArray);
-                    DebugLog(@"++++>%@",self.zhifuNameArray);
+                    LoginViewController *loginVC = [[LoginViewController alloc]init];
+                    loginVC.hidesBottomBarWhenPushed=YES;
+                    [self.navigationController pushViewController:loginVC animated:YES];
                 }
-                
-                SettlementViewController *settVC = [[SettlementViewController alloc]init];
-                settVC.settModel = model;
-                settVC.goods = string;
-                settVC.totalYue = [NSString stringWithFormat:@"%@",dict[@"totalYue"]];
-                settVC.classArray=self.classArray;
-                settVC.zhifuNameArray=self.zhifuNameArray;
-                settVC.zhifuTishiArray=self.zhifuTishiArray;
-                settVC.zhifuColorArray=self.zhifuColorArray;
-                settVC.zhifuImgArray=self.zhifuImgArray;
-               [self.navigationController pushViewController:settVC animated:YES];
-                _isback=1;
-                
-            }
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [SVProgressHUD showErrorWithStatus:@"请检查您的网络"];
-            [settlementArray removeAllObjects];
-            DebugLog(@"%@",error);
-            NSData *data = [operation responseData];
-            NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-            DebugLog(@"请求下来的数据%@",str);
-        }];
+                if ([responseDic[@"code"]isEqualToString:@"400"])
+                {
+                    [SVProgressHUD showErrorWithStatus:responseDic[@"msg"]];
+                }
+                if ([responseDic[@"code"] isEqualToString:@"200"])
+                {
+                    [SVProgressHUD dismiss];
+                    
+                    [self.classArray removeAllObjects];
+                    [self.zhifuNameArray removeAllObjects];
+                    [self.zhifuTishiArray removeAllObjects];
+                    [self.zhifuColorArray removeAllObjects];
+                    [self.zhifuImgArray removeAllObjects];
+                    
+                    NSDictionary *dict = responseDic[@"data"];
+                    SettlementModel *model = [[SettlementModel alloc]initWithDictionary:dict];
+                    //                DebugLog(@"===================%@",model.jiage);
+                    
+                    //                if ([[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+                    for (int i=0; i<model.pay_type.count; i++) {
+                        NSDictionary*dic1=[model.pay_type objectAtIndex:i];
+                        [self.classArray addObject:dic1[@"pay_class"]];
+                        [self.zhifuNameArray addObject:dic1[@"pay_name"]];
+                        [self.zhifuTishiArray addObject:dic1[@"tishi"]];
+                        [self.zhifuColorArray addObject:dic1[@"color"]];
+                        [self.zhifuImgArray addObject:dic1[@"img"]];
+                        //
+                        DebugLog(@"---->%@",self.classArray);
+                        DebugLog(@"++++>%@",self.zhifuNameArray);
+                    }
+                    
+                    //                }else{
+                    ////                    wapalipay
+                    //                    [self.classArray addObject:@"wapalipay"];
+                    //                    [self.zhifuNameArray addObject:@"支付宝"];
+                    //
+                    //                }
+                    SettlementViewController *settVC = [[SettlementViewController alloc]init];
+                    settVC.settModel = model;
+                    settVC.goods = string;
+                    settVC.totalYue = [NSString stringWithFormat:@"%@",dict[@"totalYue"]];
+                    settVC.classArray=self.classArray;
+                    settVC.zhifuNameArray=self.zhifuNameArray;
+                    settVC.zhifuTishiArray=self.zhifuTishiArray;
+                    settVC.zhifuColorArray=self.zhifuColorArray;
+                    settVC.zhifuImgArray=self.zhifuImgArray;
+                    [self.navigationController pushViewController:settVC animated:YES];
+                    _isback=1;
+                    
+                }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [SVProgressHUD showErrorWithStatus:@"请检查您的网络"];
+                [settlementArray removeAllObjects];
+                DebugLog(@"%@",error);
+                NSData *data = [operation responseData];
+                NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                DebugLog(@"请求下来的数据%@",str);
+            }];
+        }
+        else
+        {
+            [SVProgressHUD dismiss];
+            LoginViewController *loginVC = [[LoginViewController alloc]init];
+            loginVC.hidesBottomBarWhenPushed=YES;
+            [self.navigationController pushViewController:loginVC animated:YES];
+        }
+
+    }else{
+        
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"该功能暂未开放，敬请期待！" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+        [alertVC addAction:action];
+        
+        [self presentViewController:alertVC animated:YES completion:nil];
+        
     }
-    else
-    {
-        [SVProgressHUD dismiss];
-        LoginViewController *loginVC = [[LoginViewController alloc]init];
-        loginVC.hidesBottomBarWhenPushed=YES;
-        [self.navigationController pushViewController:loginVC animated:YES];
-    }
-    
 }
 
 #pragma mark - UIAlertViewDelegate

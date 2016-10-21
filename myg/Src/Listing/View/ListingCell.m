@@ -323,6 +323,7 @@
             }
             else
             {
+                
                 obj.num = obj.num - [self.listingModel.yunjiage integerValue];
                 self.num = obj.num;
                 *stop = YES;

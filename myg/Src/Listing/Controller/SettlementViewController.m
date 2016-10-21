@@ -995,7 +995,6 @@
     
     [WXApi sendReq:req];
 }
-
 -(void)weixinpayOk:(NSNotification *)noti{
     
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
