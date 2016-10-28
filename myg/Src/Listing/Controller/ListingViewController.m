@@ -814,7 +814,6 @@ ListingModel*model=[_dataArray objectAtIndex:index];
 #pragma mark 结算
 - (void)settlement
 {
-    if ([[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
         __block NSString *settlementString;
         NSMutableArray *settlementArray = [NSMutableArray array]; //结算array
         
@@ -862,7 +861,7 @@ ListingModel*model=[_dataArray objectAtIndex:index];
                     SettlementModel *model = [[SettlementModel alloc]initWithDictionary:dict];
                     //                DebugLog(@"===================%@",model.jiage);
                     
-                    //                if ([[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
+                                    if ([[UserDataSingleton userInformation].currentVersion isEqualToString:[UserDataSingleton userInformation].xinVersion]) {
                     for (int i=0; i<model.pay_type.count; i++) {
                         NSDictionary*dic1=[model.pay_type objectAtIndex:i];
                         [self.classArray addObject:dic1[@"pay_class"]];
@@ -875,12 +874,17 @@ ListingModel*model=[_dataArray objectAtIndex:index];
                         DebugLog(@"++++>%@",self.zhifuNameArray);
                     }
                     
-                    //                }else{
-                    ////                    wapalipay
-                    //                    [self.classArray addObject:@"wapalipay"];
-                    //                    [self.zhifuNameArray addObject:@"支付宝"];
-                    //
-                    //                }
+                                    }else{
+                                        
+                                        
+                    //                    wapalipayhttp://www.miyungou.com/statics/uploads/pay/alipay.png
+                                        [self.classArray addObject:@"wapalipay"];
+                                        [self.zhifuNameArray addObject:@"支付宝网页支付"];
+                                        [self.zhifuTishiArray addObject:@"推荐5元以上支付的用户使用"];
+                                        [self.zhifuImgArray addObject:@"http://www.miyungou.com/statics/uploads/pay/alipay.png"];
+                                        [self.zhifuColorArray addObject:@"#FF0000"];
+                    
+                                    }
                     SettlementViewController *settVC = [[SettlementViewController alloc]init];
                     settVC.settModel = model;
                     settVC.goods = string;
@@ -892,7 +896,6 @@ ListingModel*model=[_dataArray objectAtIndex:index];
                     settVC.zhifuImgArray=self.zhifuImgArray;
                     [self.navigationController pushViewController:settVC animated:YES];
                     _isback=1;
-                    
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 [SVProgressHUD showErrorWithStatus:@"请检查您的网络"];
@@ -911,15 +914,6 @@ ListingModel*model=[_dataArray objectAtIndex:index];
             [self.navigationController pushViewController:loginVC animated:YES];
         }
 
-    }else{
-        
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"该功能暂未开放，敬请期待！" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-        [alertVC addAction:action];
-        
-        [self presentViewController:alertVC animated:YES completion:nil];
-        
-    }
 }
 
 #pragma mark - UIAlertViewDelegate
